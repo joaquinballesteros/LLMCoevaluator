@@ -1,0 +1,25 @@
+A. Precisión Técnica
+✅ Bueno (4-5) → El feedback identifica correctamente el error, proporciona una solución válida y no introduce errores nuevos.
+⚠️ Medio (2-3) → Identifica el error pero da una solución incorrecta o parcial.
+❌ Malo (1) → Identifica mal el problema o da una corrección errónea.
+Ejemplo de evaluación:
+❌ "Tu código está mal porque usaste = en vez de == en una condición."
+(Incorrecto si realmente el error era otro)
+✅ "La condición if (x = 5) debería ser if (x == 5) porque = asigna y == compara."
+(Explicación correcta y técnica)
+
+B. Claridad y Explicabilidad
+✅ Bueno (4-5) → Explica el problema con un lenguaje claro y preciso, usando ejemplos o referencias.
+⚠️ Medio (2-3) → La explicación es ambigua, falta detalle o usa terminología confusa.
+❌ Malo (1) → Feedback genérico o inentendible.
+Ejemplo de evaluación:
+❌ "Hay un error en tu código. Revisa la sintaxis." (Muy vago)
+✅ "Tu bucle for usa i < n, pero n no está definido antes de su uso. Decláralo como int n = ...." (Explicativo y claro)
+
+C. Utilidad para el Aprendizaje
+✅ Bueno (4-5) → El feedback no solo corrige sino que también enseña algo útil.
+⚠️ Medio (2-3) → Corrige el error pero no explica por qué.
+❌ Malo (1) → No aporta información útil para aprender.
+Ejemplo de evaluación:
+❌ "Error en la línea 3." (No explica nada útil)
+✅ "Tienes un segmentation fault porque accedes a arr[10] pero el array solo tiene 5 elementos. Usa un chequeo con if."
