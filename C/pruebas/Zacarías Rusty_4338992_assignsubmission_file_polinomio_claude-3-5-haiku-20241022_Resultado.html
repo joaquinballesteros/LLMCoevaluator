@@ -1,0 +1,95 @@
+compila correctamente<br>
+Aquí está la evaluación del código del estudiante:
+
+Calificación final: 7.5/10<br>
+
+<table border="1">
+  <tr>
+    <th>Método</th>
+    <th>Puntuación</th>
+    <th>Retroalimentación</th>
+  </tr>
+  <tr>
+    <td>poly_crear</td>
+    <td>1 / 1</td>
+    <td>
+      <strong>Funcionalidad:</strong> Correcto. Inicializa correctamente los punteros primero y último.<br>
+      <strong>Mantenimiento:</strong> Código claro y conciso.<br>
+      <strong>Claridad:</strong> Buen uso de comentarios y nombres descriptivos.<br>
+      <strong>Eficiencia:</strong> Implementación directa y eficiente.<br>
+      <em>Sugerencia Formativa:</em> Considera usar exit(-1) en lugar de exit(1) para seguir la especificación del enunciado.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_grado</td>
+    <td>1 / 1</td>
+    <td>
+      <strong>Funcionalidad:</strong> Correcto. Devuelve -1 si el polinomio es nulo o vacío.<br>
+      <strong>Mantenimiento:</strong> Código simple y directo.<br>
+      <strong>Claridad:</strong> Nombres de variables claros.<br>
+      <strong>Eficiencia:</strong> Muy eficiente, accede directamente al último elemento en O(1).<br>
+      <em>Sugerencia Formativa:</em> Sin comentarios adicionales.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_coeficiente</td>
+    <td>1 / 1</td>
+    <td>
+      <strong>Funcionalidad:</strong> Correcto. Maneja casos de exponente negativo y polinomio nulo.<br>
+      <strong>Mantenimiento:</strong> Código claro y conciso.<br>
+      <strong>Claridad:</strong> Nombres de variables descriptivos.<br>
+      <strong>Eficiencia:</strong> Recorrido lineal eficiente.<br>
+      <em>Sugerencia Formativa:</em> Considera añadir un break después de encontrar el coeficiente para optimizar ligeramente.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_agregar</td>
+    <td>2.5 / 2.5</td>
+    <td>
+      <strong>Funcionalidad:</strong> Correcto. Maneja suma de coeficientes, eliminación de monomios con coeficiente 0.<br>
+      <strong>Mantenimiento:</strong> Buena descomposición con función auxiliar sumarMonomiosF().<br>
+      <strong>Claridad:</strong> Código bien estructurado con comentarios explicativos.<br>
+      <strong>Eficiencia:</strong> Implementación eficiente con inserción ordenada.<br>
+      <em>Sugerencia Formativa:</em> Excelente uso de funciones auxiliares para mejorar la legibilidad.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_imprimir</td>
+    <td>1.25 / 1.25</td>
+    <td>
+      <strong>Funcionalidad:</strong> Correcto. Maneja casos de polinomio nulo.<br>
+      <strong>Mantenimiento:</strong> Buena descomposición con función auxiliar imprimirMonomio().<br>
+      <strong>Claridad:</strong> Código claro con nombres descriptivos.<br>
+      <strong>Eficiencia:</strong> Recorrido lineal eficiente.<br>
+      <em>Sugerencia Formativa:</em> Considera añadir un espacio final solo si hay monomios.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_destruir</td>
+    <td>1.25 / 1.25</td>
+    <td>
+      <strong>Funcionalidad:</strong> Correcto. Libera todos los nodos y reinicia punteros.<br>
+      <strong>Mantenimiento:</strong> Código simple y directo.<br>
+      <strong>Claridad:</strong> Nombres de variables claros.<br>
+      <strong>Eficiencia:</strong> Liberación de memoria eficiente.<br>
+      <em>Sugerencia Formativa:</em> Sin comentarios adicionales.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_sumar</td>
+    <td>2 / 2</td>
+    <td>
+      <strong>Funcionalidad:</strong> Correcto. Maneja casos de polinomios nulos.<br>
+      <strong>Mantenimiento:</strong> Código claro y directo.<br>
+      <strong>Claridad:</strong> Nombres de variables descriptivos.<br>
+      <strong>Eficiencia:</strong> Implementación directa, aunque podría optimizarse para sumar simultáneamente.<br>
+      <em>Sugerencia Formativa:</em> Considera una implementación que sume monomios de ambos polinomios en un solo recorrido.
+    </td>
+  </tr>
+</table>
+
+Comentarios generales:
+- Excelente implementación general con un enfoque claro y mantenible.
+- Buen uso de funciones auxiliares para mejorar la legibilidad.
+- Manejo adecuado de casos especiales y gestión de memoria.
+- Algunas pequeñas mejoras podrían realizarse en eficiencia y detalles menores.

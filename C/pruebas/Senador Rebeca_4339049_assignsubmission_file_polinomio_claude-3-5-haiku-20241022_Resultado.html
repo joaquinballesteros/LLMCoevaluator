@@ -1,0 +1,102 @@
+compila con ERRORES<br>
+Aquí está la evaluación del código del estudiante:
+
+Calificación final: 3.5/10
+
+<table border="1">
+  <tr>
+    <th>Método</th>
+    <th>Puntuación</th>
+    <th>Retroalimentación</th>
+  </tr>
+  <tr>
+    <td>poly_crear</td>
+    <td>0.5 / 1</td>
+    <td>
+      <strong>Funcionalidad:</strong> La función no asigna correctamente el polinomio creado al parámetro de entrada <code>p</code>. Falta hacer <code>*p = new;</code>.<br>
+      <strong>Mantenimiento:</strong> Código simple y directo.<br>
+      <strong>Claridad:</strong> Buen uso de nombres de variables y comentarios.<br>
+      <strong>Eficiencia:</strong> Sin comentarios.<br>
+      <em>Sugerencia Formativa:</em> Asegúrate de asignar el nuevo polinomio al parámetro de entrada para que los cambios sean visibles fuera de la función.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_grado</td>
+    <td>0.5 / 1</td>
+    <td>
+      <strong>Funcionalidad:</strong> La función no maneja correctamente el caso de un polinomio nulo. Devuelve el exponente del último monomio sin verificar si existe.<br>
+      <strong>Mantenimiento:</strong> Código simple pero con potenciales problemas de manejo de casos extremos.<br>
+      <strong>Claridad:</strong> Nombres de variables claros.<br>
+      <strong>Eficiencia:</strong> Accede directamente al último monomio, lo cual es eficiente.<br>
+      <em>Sugerencia Formativa:</em> Añade verificaciones de nulidad más robustas antes de acceder a los campos de la estructura.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_coeficiente</td>
+    <td>0.25 / 1</td>
+    <td>
+      <strong>Funcionalidad:</strong> Error crítico: devuelve el exponente en lugar del coeficiente. No maneja correctamente el último nodo de la lista.<br>
+      <strong>Mantenimiento:</strong> Lógica de búsqueda compleja y propensa a errores.<br>
+      <strong>Claridad:</strong> Bucle while innecesariamente complejo.<br>
+      <strong>Eficiencia:</strong> Recorrido ineficiente de la lista.<br>
+      <em>Sugerencia Formativa:</em> Simplifica la lógica de búsqueda. Asegúrate de devolver el coeficiente correcto y manejar todos los casos de la lista.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_agregar</td>
+    <td>0.5 / 2.5</td>
+    <td>
+      <strong>Funcionalidad:</strong> Código extremadamente complejo con múltiples errores lógicos. No maneja correctamente la inserción, suma o eliminación de monomios.<br>
+      <strong>Mantenimiento:</strong> Código muy difícil de mantener debido a su complejidad y múltiples condiciones anidadas.<br>
+      <strong>Claridad:</strong> Lógica confusa con múltiples ramas condicionales que hacen el código ilegible.<br>
+      <strong>Eficiencia:</strong> Múltiples recorridos innecesarios de la lista.<br>
+      <em>Sugerencia Formativa:</em> Reescribe la función de manera más modular. Separa la lógica de inserción, suma y eliminación en funciones más pequeñas y claras.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_imprimir</td>
+    <td>0 / 1.25</td>
+    <td>
+      <strong>Funcionalidad:</strong> Errores de compilación por typos (<code>prinf</code> en lugar de <code>printf</code>, <code>mon->sig</code> en lugar de <code>mon->siguiente</code>).<br>
+      <strong>Mantenimiento:</strong> Sin comentarios.<br>
+      <strong>Claridad:</strong> Sin comentarios.<br>
+      <strong>Eficiencia:</strong> Sin comentarios.<br>
+      <em>Sugerencia Formativa:</em> Revisa cuidadosamente la sintaxis y los nombres de campos y funciones.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_destruir</td>
+    <td>0.5 / 1.25</td>
+    <td>
+      <strong>Funcionalidad:</strong> No libera correctamente toda la memoria. Posible acceso a memoria no válida.<br>
+      <strong>Mantenimiento:</strong> Lógica de liberación de memoria confusa.<br>
+      <strong>Claridad:</strong> Nombres de variables poco descriptivos.<br>
+      <strong>Eficiencia:</strong> Recorrido ineficiente de la lista.<br>
+      <em>Sugerencia Formativa:</em> Asegúrate de liberar todos los nodos de manera segura. Usa un bucle que libere completamente la lista.
+    </td>
+  </tr>
+  <tr>
+    <td>poly_sumar</td>
+    <td>0.25 / 2</td>
+    <td>
+      <strong>Funcionalidad:</strong> Función incompleta. Verifica solo la igualdad de coeficientes sin realizar la suma real.<br>
+      <strong>Mantenimiento:</strong> Código esquelético sin implementación completa.<br>
+      <strong>Claridad:</strong> Falta de implementación clara.<br>
+      <strong>Eficiencia:</strong> Sin implementación para evaluar.<br>
+      <em>Sugerencia Formativa:</em> Implementa completamente la lógica de suma de polinomios, manejando diferentes casos como polinomios de diferente longitud.
+    </td>
+  </tr>
+</table>
+
+Observaciones generales:
+1. El código tiene múltiples errores de compilación y lógica.
+2. Falta manejo robusto de casos extremos (punteros nulos, listas vacías).
+3. La implementación de las funciones es confusa y propensa a errores.
+4. Se necesita una refactorización completa para mejorar la claridad, mantenibilidad y funcionalidad.
+
+Recomendaciones principales:
+- Simplificar la lógica de cada función.
+- Añadir más verificaciones de nulidad y casos extremos.
+- Usar funciones auxiliares para descomponer la lógica compleja.
+- Revisar cuidadosamente la sintaxis y los nombres de variables y campos.
+- Implementar un manejo de memoria más robusto.

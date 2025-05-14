@@ -1,0 +1,90 @@
+compila con ERRORES<br>
+<html>
+  <body>
+    <p>Calificación final: 5/10<br></p>
+    <table border="1">
+      <tr>
+        <th>Método</th>
+        <th>Puntuación</th>
+        <th>Retroalimentación</th>
+      </tr>
+      <tr>
+        <td>poly_crear</td>
+        <td>0.5 / 1</td>
+        <td>
+          <strong>Funcionalidad:</strong> Se reserva memoria y se inicializan los campos internos, pero falta asignar el puntero recién creado a la variable apuntada por el parámetro (<code>*p = new;</code>). Esto impide que el polinomio creado esté disponible para uso posterior. <br>
+          <strong>Mantenimiento:</strong> El código es relativamente corto, pero usar nombres como “new” (palabra reservada en otros lenguajes) puede generar confusión a futuro. <br>
+          <strong>Claridad:</strong> Los comentarios son adecuados, sin embargo la omisión de asignar el resultado a <code>*p</code> reduce la comprensión de la intención final. <br>
+          <strong>Eficiencia:</strong> No hay problemas relevantes de eficiencia. <br>
+          <em>Sugerencia Formativa:</em> Asegúrate de asignar el puntero creado a <code>*p</code> para que el resto del programa pueda usar el polinomio creado. Usa nombres más descriptivos que no se presten a confusión.
+        </td>
+      </tr>
+      <tr>
+        <td>poly_grado</td>
+        <td>0.5 / 1</td>
+        <td>
+          <strong>Funcionalidad:</strong> El método intenta devolver el exponente del último monomio, pero no verifica si el puntero del polinomio (<code>p</code>) es NULL, y depende de que el polinomio tenga un elemento en <code>ultimo</code>. <br>
+          <strong>Mantenimiento:</strong> Se puede mejorar haciendo una función auxiliar que verifique la validez del polinomio antes de operar. <br>
+          <strong>Claridad:</strong> Los nombres de variables son aceptables, aunque usar <code>mon</code> para “último monomio” puede ser confuso. <br>
+          <strong>Eficiencia:</strong> La solución es O(1) al acceder al último nodo, lo cual es eficiente. <br>
+          <em>Sugerencia Formativa:</em> Incorpora verificaciones de punteros nulos y, si el diseño lo permite, utiliza una función que centralice la validación del estado del polinomio.
+        </td>
+      </tr>
+      <tr>
+        <td>poly_coeficiente</td>
+        <td>0.5 / 1</td>
+        <td>
+          <strong>Funcionalidad:</strong> La función recorre la lista en busca de un monomio con el exponente solicitado, pero en lugar de devolver el coeficiente encuentra el exponente. Además, no se contemplan entradas inválidas (por ejemplo, exponente negativo). <br>
+          <strong>Mantenimiento:</strong> Se recomienda encapsular la búsqueda de un monomio en una función auxiliar para evitar duplicación de código en otros métodos. <br>
+          <strong>Claridad:</strong> Los nombres de variables (por ejemplo, <code>mon</code>) son poco descriptivos; sería mejor usar <code>actual</code> o similar. <br>
+          <strong>Eficiencia:</strong> La complejidad O(n) es aceptable para recorridos en listas enlazadas, sin embargo, se debe cuidar el acceso a nodos. <br>
+          <em>Sugerencia Formativa:</em> Corrige la lógica para retornar el campo <code>coeficiente</code> en lugar del exponente y agrega validaciones para entradas no válidas.
+        </td>
+      </tr>
+      <tr>
+        <td>poly_agregar</td>
+        <td>1.0 / 2.5</td>
+        <td>
+          <strong>Funcionalidad:</strong> La función intenta insertar o actualizar un monomio, pero la lógica contiene errores graves: se realizan asignaciones de tipos incompatibles (por ejemplo, asignar el resultado de una suma a un puntero) y la eliminación de un monomio con coeficiente 0 no se maneja correctamente. <br>
+          <strong>Mantenimiento:</strong> La función es demasiado extensa y carece de descomposición en subfunciones para los distintos casos (inserción en cabeza, en medio o al final), lo que complica su mantenimiento. <br>
+          <strong>Claridad:</strong> La lectura del código es difícil debido a la falta de comentarios internos y al uso inadecuado de condiciones. <br>
+          <strong>Eficiencia:</strong> Se realizan recorridos innecesarios y la lógica de verificación podría simplificarse, afectando la eficiencia en polinomios de gran tamaño. <br>
+          <em>Sugerencia Formativa:</em> Refactoriza la función dividiéndola en funciones auxiliares para cada caso de inserción o actualización. Asegúrate de utilizar tipos correctos en las asignaciones y valida las condiciones en cada paso.
+        </td>
+      </tr>
+      <tr>
+        <td>poly_imprimir</td>
+        <td>0.5 / 1.25</td>
+        <td>
+          <strong>Funcionalidad:</strong> El método tiene errores de sintaxis (por ejemplo, se usa <code>prinf</code> en lugar de <code>printf</code>) y se emplean nombres de campos incorrectos (<code>sig</code>, <code>coef</code>, <code>exp</code> en lugar de <code>siguiente</code>, <code>coeficiente</code> y <code>exponente</code>). Esto impide que la salida sea la esperada. <br>
+          <strong>Mantenimiento:</strong> La función es corta, pero el uso de nombres inconsistentes puede generar confusión en futuras modificaciones. <br>
+          <strong>Claridad:</strong> La lectura se dificulta por la mezcla de nombres de campos y errores tipográficos. <br>
+          <strong>Eficiencia:</strong> No se evidencia un problema de eficiencia importante en este caso. <br>
+          <em>Sugerencia Formativa:</em> Corrige los errores de tipografía y usa los nombres de campos definidos en la estructura para que la función compile y funcione correctamente.
+        </td>
+      </tr>
+      <tr>
+        <td>poly_destruir</td>
+        <td>0.75 / 1.25</td>
+        <td>
+          <strong>Funcionalidad:</strong> La función intenta liberar la memoria de todos los nodos, pero no verifica el caso de un polinomio vacío y la lógica para recorrer y liberar los nodos es errónea, lo que puede generar fugas de memoria o accesos inválidos. <br>
+          <strong>Mantenimiento:</strong> La estructura del código es confusa y difícil de seguir; usar nombres más descriptivos para los punteros ayudaría a su mantenimiento. <br>
+          <strong>Claridad:</strong> La confusión entre <code>mon</code> y <code>aux</code> y la falta de comentarios internos dificultan la comprensión de la liberación de recursos. <br>
+          <strong>Eficiencia:</strong> Se realizan operaciones de liberación en forma poco clara que podrían optimizarse con un solo bucle limpio. <br>
+          <em>Sugerencia Formativa:</em> Revisa la secuencia de liberación para cada nodo y verifica que, tras liberar, los punteros del polinomio se asignen a NULL para evitar accesos posteriores a memoria liberada.
+        </td>
+      </tr>
+      <tr>
+        <td>poly_sumar</td>
+        <td>1.0 / 2</td>
+        <td>
+          <strong>Funcionalidad:</strong> La función no implementa la suma de dos polinomios de forma coherente; únicamente verifica una condición sobre el coeficiente del primer monomio y falta recorrer las listas para combinar los monomios. Además, se omiten casos de entrada nula o inconsistencias en la estructura de los polinomios. <br>
+          <strong>Mantenimiento:</strong> La base de la función es insuficiente para realizar la suma; se sugiere partir la tarea en funciones auxiliares que permitan sumar monomios de igual exponente y manejar la inserción en el resultado. <br>
+          <strong>Claridad:</strong> El uso de variables como <code>mon1</code> y <code>mon2</code> es adecuado, pero la ausencia de comentarios y la falta de un algoritmo definido para la suma afectan la comprensión. <br>
+          <strong>Eficiencia:</strong> Al no implementar un método correcto de recorrido y fusión de listas, la función no aprovecha potenciales mejoras de eficiencia en la iteración simultánea de nodos. <br>
+          <em>Sugerencia Formativa:</em> Desarrolla una estrategia que recorra ambos polinomios de forma paralela, sumando coeficientes cuando los exponentes coincidan, e inserta los monomios resultantes en un nuevo polinomio de forma ordenada.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
