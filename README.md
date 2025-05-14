@@ -14,19 +14,16 @@ Este repositorio contiene el código necesario para realizar esta coevaluación 
 2. Revisión y ajuste por parte del docente para su entrega final en la plataforma Moodle.
 
 <p align="center">
-    <img src="image.png" alt="Vista del sistema" width="30%">
+    <img src="bigpicture.png" alt="Vista del sistema" width="30%">
 </p>
 
 <p align="center">
     <em>Figura 1: Sistema propuesto para coevaluación con LLM.</em>
 </p>
 
-
-A continuación se describen los pasos para hacer uso de esta herramienta.
-
 ---
 
-# Paso 0: Instalación y configuración
+# Paso 1: Instalación y configuración
 
 Se incluye un archivo `requirements.txt` para facilitar la instalación de las dependencias necesarias.
 
@@ -34,7 +31,7 @@ Además, es necesario completar las API Keys en el archivo `.env`. Este archivo 
 
 ---
 
-# Paso 1: Evaluación automática con LLM
+# Paso 2: Evaluación automática con LLM
 
 Actualmente se soportan dos lenguajes: **C (con GCC)** y **Java (con Maven)**. Esto sólo es necesario para compilar el código y es un paso que se podría saltar si es necesario.
 
