@@ -1,6 +1,6 @@
 ﻿Identificador,Nombre completo,Estado,Calificación,Calificación máxima,La calificación puede ser cambiada,Visualización/<br>entrega,Última modificación (calificación),Comentarios de retroalimentación del profesor
-Participante_19140,Senador Rebeca,Sin&nbsp;entrega,0,"10,00",Sí,-,-,"<p>compila correctamente<br></p>
-<p>Calificaci&oacute;n final: 5/10<br></p>
+Participante_19140,Senador Rebeca,Sin&nbsp;entrega,"0,0","10,00",Sí,-,-,"<p>compila correctamente<br></p>
+<p>Calificaci&oacute;n final: 4.75/10<br></p>
 <table border=""1"">
 <tbody>
 <tr>
@@ -11,40 +11,88 @@ Participante_19140,Senador Rebeca,Sin&nbsp;entrega,0,"10,00",Sí,-,-,"<p>compila
 <tr>
 <td>poly_crear</td>
 <td>0.5 / 1</td>
-<td><strong>Funcionalidad:</strong> Se reserva memoria y se inicializan los campos internos, pero se omite asignar el puntero creado a *p, por lo que quien invoque la funci&oacute;n no obtendr&aacute; la estructura creada.<br> <strong>Mantenimiento:</strong> El c&oacute;digo es corto, pero se recomienda asignar directamente a *p para evitar confusiones y mantener el contrato de la funci&oacute;n.<br> <strong>Claridad:</strong> Los nombres de las variables no son del todo descriptivos (por ejemplo, &ldquo;new&rdquo; podr&iacute;a tener un nombre m&aacute;s claro) y la ausencia de comentarios que expliquen la asignaci&oacute;n reduce la claridad.<br> <strong>Eficiencia:</strong> La asignaci&oacute;n de memoria y verificaci&oacute;n son aceptables.<br> <em>Sugerencia Formativa:</em> Asigna la direcci&oacute;n de memoria creada a *p para que el polinomio inicializado est&eacute; disponible para su uso posterior.</td>
+<td>
+<p><strong>Funcionalidad:</strong> Se reserva memoria correctamente pero nunca asigna la direcci&oacute;n reci&eacute;n reservada a <code>*p</code>, por lo que el polinomio creado no queda accesible.&nbsp;</p>
+<p><em>Sugerencia Formativa:</em> Siempre usa el depurador para revisaar que se asignan corrctramente.</p>
+</td>
 </tr>
 <tr>
 <td>poly_grado</td>
 <td>0.5 / 1</td>
-<td><strong>Funcionalidad:</strong> Obtiene el grado a partir del &uacute;ltimo monomio, pero no verifica que el puntero p sea no nulo y depende de p-&gt;ultimo, lo que puede fallar si la estructura no se ha inicializado correctamente.<br> <strong>Mantenimiento:</strong> La implementaci&oacute;n es simple, pero se podr&iacute;a encapsular la validaci&oacute;n del polinomio en una funci&oacute;n auxiliar para evitar repetici&oacute;n en otros m&eacute;todos.<br> <strong>Claridad:</strong> El c&oacute;digo es entendible, pero el uso de variables con nombres m&aacute;s descriptivos ayudar&iacute;a a la lectura.<br> <strong>Eficiencia:</strong> La operaci&oacute;n es O(1) si se usa p-&gt;ultimo, aunque se debe asegurar que dicho puntero siempre tenga el monomio de mayor exponente.<br> <em>Sugerencia Formativa:</em> A&ntilde;ade comprobaciones de NULL para el puntero p y considera centralizar la validaci&oacute;n del polinomio en una funci&oacute;n auxiliar.</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta devolver el exponente del &uacute;ltimo monomio, pero no verifica si el propio puntero <code>p</code> es NULL y asume que <code>p-&gt;ultimo</code> representa siempre el t&eacute;rmino de mayor exponente. <br> <strong>Mantenimiento:</strong> Podr&iacute;a beneficiarse de una funci&oacute;n auxiliar para comprobar la validez del polinomio, lo que evitar&iacute;a duplicar la verificaci&oacute;n en otros m&eacute;todos. <br> <strong>Claridad:</strong> El c&oacute;digo es sencillo, aunque el nombre de la variable &ldquo;mon&rdquo; es gen&eacute;rico. <br> <strong>Eficiencia:</strong> Se recurre a un acceso directo a <code>p-&gt;ultimo</code> sin iterar, lo que es adecuado si se mantiene la estructura de lista ordenada. <br> <em>Sugerencia Formativa:</em> Considera incluir una comprobaci&oacute;n <code>if(p == NULL)</code> para aumentar la robustez.</td>
 </tr>
 <tr>
 <td>poly_coeficiente</td>
 <td>0.5 / 1</td>
-<td><strong>Funcionalidad:</strong> La funci&oacute;n recorre la lista buscando un monomio cuyo exponente coincida, pero asigna el valor del exponente en lugar del coeficiente y no contempla casos de exponente negativo.<br> <strong>Mantenimiento:</strong> Se recomienda crear una funci&oacute;n auxiliar para buscar un monomio dado un exponente y reutilizarla en otros m&eacute;todos, evitando duplicaci&oacute;n.<br> <strong>Claridad:</strong> Los nombres de variables pueden ser m&aacute;s descriptivos (por ejemplo, &ldquo;mon&rdquo; podr&iacute;a especificar que es el actual monomio) y habr&iacute;a que corregir la asignaci&oacute;n de resultado.<br> <strong>Eficiencia:</strong> El recorrido lineal es adecuado, pero es importante validar las entradas antes de iterar.<br> <em>Sugerencia Formativa:</em> Revisa la l&oacute;gica para asignar el coeficiente correcto y a&ntilde;ade controles para exponente negativo.</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n recorre la lista de monomios pero, en lugar de devolver el coeficiente del monomio coincidiente, devuelve el exponente, lo que no cumple el enunciado. <br> <strong>Mantenimiento:</strong> La l&oacute;gica de recorrido es repetitiva y podr&iacute;a centralizarse en una funci&oacute;n auxiliar para la b&uacute;squeda. <br> <strong>Claridad:</strong> Los nombres de las variables son poco descriptivos y se confunde el uso de <code>exp</code> al comparar exponentes pero asignar valores err&oacute;neos. <br> <strong>Eficiencia:</strong> Se recorre la lista de forma innecesaria en dos bloques (dentro del while y despu&eacute;s del while). <br> <em>Sugerencia Formativa:</em> Revise la l&oacute;gica de comparaci&oacute;n y aseg&uacute;rese de devolver <code>mon-&gt;coeficiente</code> en lugar de <code>mon-&gt;exponente</code>.</td>
 </tr>
 <tr>
 <td>poly_agregar</td>
 <td>1.0 / 2.5</td>
-<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta insertar un monomio y actualizar coeficientes existentes, pero la l&oacute;gica interna es incorrecta. Se realizan asignaciones err&oacute;neas (por ejemplo, se asigna un entero a un puntero) y el manejo de la lista (inserci&oacute;n, suma y eliminaci&oacute;n) no est&aacute; bien implementado.<br> <strong>Mantenimiento:</strong> La funci&oacute;n es extensa y contiene bloques de c&oacute;digo repetitivos. La extracci&oacute;n de subfunciones para inserci&oacute;n en cabeza, en medio o final ayudar&iacute;a a mejorar la mantenibilidad.<br> <strong>Claridad:</strong> La complejidad de la funci&oacute;n y el uso de condiciones anidadas dificultan su lectura. Se recomienda comentar cada secci&oacute;n y usar nombres de variables m&aacute;s descriptivos.<br> <strong>Eficiencia:</strong> Aunque la estructura de recorrido es aceptable, la l&oacute;gica de verificaci&oacute;n de posici&oacute;n podr&iacute;a optimizarse para evitar bucles innecesarios.<br> <em>Sugerencia Formativa:</em> Reestructurar la l&oacute;gica de inserci&oacute;n usando funciones auxiliares y corregir las asignaciones err&oacute;neas para asegurar que se sume correctamente el coeficiente o se elimine el nodo cuando sea cero.</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta insertar o actualizar un monomio, pero se utilizan operaciones que asignan enteros a punteros y la l&oacute;gica para sumar coeficientes o eliminar un nodo es inconsistente. <br> <strong>Mantenimiento:</strong> La funci&oacute;n es larga y carece de subrutinas o funciones auxiliares para separar los casos (inserci&oacute;n al inicio, medio y fin), lo que dificulta la correcci&oacute;n y mejora del c&oacute;digo. <br> <strong>Claridad:</strong> Las condiciones anidadas y la reutilizaci&oacute;n inadecuada de variables (por ejemplo, asignar un resultado entero a una variable que originalmente es un puntero) hacen que el c&oacute;digo sea dif&iacute;cil de seguir. <br> <strong>Eficiencia:</strong> Podr&iacute;a optimizarse evitando m&uacute;ltiples recorridos cuando se pueden integrar en una sola iteraci&oacute;n. <br> <em>Sugerencia Formativa:</em> Descomp&oacute;n la funci&oacute;n en partes m&aacute;s peque&ntilde;as para manejar cada caso de inserci&oacute;n, suma y eliminaci&oacute;n, y revisa la conversi&oacute;n de tipos para evitar asignaciones de enteros a punteros.</td>
 </tr>
 <tr>
 <td>poly_imprimir</td>
-<td>0.75 / 1.25</td>
-<td><strong>Funcionalidad:</strong> Intenta imprimir los monomios, pero emplea la funci&oacute;n ""prinf"" en lugar de ""printf"" y accede a miembros incorrectos de la estructura (usa ""sig"", ""coef"" y ""exp"" en vez de ""siguiente"", ""coeficiente"" y ""exponente"").<br> <strong>Mantenimiento:</strong> El c&oacute;digo es breve, pero estos errores tipogr&aacute;ficos y de nombres imponen dificultades para futuras modificaciones.<br> <strong>Claridad:</strong> La intenci&oacute;n es clara, pero los errores en nombres y funci&oacute;n de impresi&oacute;n disminuyen la legibilidad y confianza en la salida.<br> <strong>Eficiencia:</strong> El bucle es adecuado para el tama&ntilde;o de un polinomio, sin embargo, la falta de iteraci&oacute;n correcta afecta la funcionalidad.<br> <em>Sugerencia Formativa:</em> Corrige los errores tipogr&aacute;ficos y utiliza los nombres correctos de los campos seg&uacute;n la estructura definida.</td>
+<td>0.5 / 1.25</td>
+<td><strong>Funcionalidad:</strong> Se intenta imprimir el polinomio, pero se emplea la funci&oacute;n <code>prinf</code> en lugar de <code>printf</code> y se usan nombres de campos (<code>sig</code>, <code>coef</code> y <code>exp</code>) que no corresponden con la estructura definida. <br> <strong>Mantenimiento:</strong> La dependencia en nombres de campo inconsistentes dificulta la integraci&oacute;n con el resto del c&oacute;digo. <br> <strong>Claridad:</strong> Los errores tipogr&aacute;ficos y el uso de variables mal nombradas reducen la legibilidad. <br> <strong>Eficiencia:</strong> La l&oacute;gica de recorrido es simple, pero se ve opacada por errores sint&aacute;cticos. <br> <em>Sugerencia Formativa:</em> Corrige el error tipogr&aacute;fico a <code>printf</code> y aseg&uacute;rate de utilizar los nombres de campo correctos definidos en la estructura.</td>
 </tr>
 <tr>
 <td>poly_destruir</td>
 <td>0.75 / 1.25</td>
-<td><strong>Funcionalidad:</strong> Se intenta liberar la memoria de los monomios, pero la estrategia de liberaci&oacute;n presenta errores. Se empieza liberando p-&gt;primero y se itera sobre p-&gt;primero-&gt;sig, lo que puede generar fugas y accesos indebidos. Adem&aacute;s, no se reinicializan p-&gt;ultimo ni se asigna NULL a todos los punteros utilizados.<br> <strong>Mantenimiento:</strong> La funci&oacute;n se beneficiar&iacute;a de una estructura de bucle m&aacute;s limpia y de una comprobaci&oacute;n consistente de los punteros, lo que facilitar&iacute;a su mantenimiento.<br> <strong>Claridad:</strong> Los nombres &ldquo;mon&rdquo; y &ldquo;aux&rdquo; no indican claramente su funci&oacute;n. Mejorar la nomenclatura y documentar el proceso de liberaci&oacute;n ayudar&iacute;a a su comprensi&oacute;n.<br> <strong>Eficiencia:</strong> Se realiza m&aacute;s de una llamada a free, pero la l&oacute;gica de liberaci&oacute;n incompleta puede llevar a errores de memoria.<br> <em>Sugerencia Formativa:</em> Redise&ntilde;a la funci&oacute;n para iterar correctamente sobre toda la lista, liberando cada nodo y asignando NULL a los punteros finales para evitar errores posteriores.</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta liberar la memoria de cada monomio pero el recorrido de la lista es defectuoso; por ejemplo, se parte de <code>p-&gt;primero-&gt;sig</code> y se liberan nodos de forma que puede quedar memoria sin liberar correctamente. <br> <strong>Mantenimiento:</strong> La utilizaci&oacute;n de variables con nombres gen&eacute;ricos como <code>mon</code> y <code>aux</code> dificulta el seguimiento del proceso de liberaci&oacute;n. <br> <strong>Claridad:</strong> La l&oacute;gica para avanzar en la lista y liberar cada nodo no es clara ni robusta ante listas con pocos nodos. <br> <strong>Eficiencia:</strong> Se realizan llamadas a <code>free</code> de forma que puede ocasionar dobles liberaciones o accesos incorrectos. <br> <em>Sugerencia Formativa:</em> Recorre la lista desde el primer nodo, guarda el siguiente en una variable temporal y libera el nodo actual en cada iteraci&oacute;n, finalizando poniendo <code>p-&gt;primero</code> y <code>p-&gt;ultimo</code> a NULL.</td>
 </tr>
 <tr>
 <td>poly_sumar</td>
 <td>1.0 / 2</td>
-<td><strong>Funcionalidad:</strong> La funci&oacute;n est&aacute; incompleta. S&oacute;lo verifica una condici&oacute;n muy limitada (que los coeficientes del primer monomio sean iguales) y no realiza la suma de los polinomios, lo que impide su correcto funcionamiento.<br> <strong>Mantenimiento:</strong> La falta de desarrollo de la l&oacute;gica hace dif&iacute;cil evaluar la sostenibilidad. Se recomienda dise&ntilde;ar la suma integrando la adici&oacute;n de monomios con los mismos exponentes en una funci&oacute;n auxiliar.<br> <strong>Claridad:</strong> La estructura condicional utilizada no clarifica la intenci&oacute;n de la suma y deja grandes lagunas en la lectura del proceso.<br> <strong>Eficiencia:</strong> La idea de recorrer ambas listas podr&iacute;a mejorarse realizando un solo recorrido coordinado, pero esta optimizaci&oacute;n debe implementarse en conjunto con una l&oacute;gica completa.<br> <em>Sugerencia Formativa:</em> Completa la implementaci&oacute;n sumando monomio a monomio, manejando correctamente las situaciones de exponentes coincidentes y controlando la validaci&oacute;n de entradas (incluyendo comprobaciones de NULL).</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n apenas comprueba una condici&oacute;n muy limitada (comparando coeficientes del primer nodo) y no implementa la l&oacute;gica necesaria para recorrer ambos polinomios y sumar los monomios con iguales exponentes. <br> <strong>Mantenimiento:</strong> La ausencia de una implementaci&oacute;n completa y el hecho de retornar un polinomio &ldquo;vac&iacute;o&rdquo; sin suma efectiva dificulta la reutilizaci&oacute;n y extensi&oacute;n del c&oacute;digo en el futuro. <br> <strong>Claridad:</strong> La estructura de la funci&oacute;n es m&iacute;nima y deja incomprendida la intenci&oacute;n de la suma, lo que obliga a partir de cero para su correcci&oacute;n. <br> <strong>Eficiencia:</strong> Se evita un recorrido doble al no implementar la fusi&oacute;n de listas ordenadas, pero la limitaci&oacute;n funcional impide aprovechar este beneficio. <br> <em>Sugerencia Formativa:</em> Implementa un recorrido paralelo de ambas listas de monomios que sume coeficientes cuando los exponentes coincidan y copie los monomios restantes, manejando adecuadamente casos nulos.</td>
 </tr>
 </tbody>
 </table>"
-Participante_19137,Zacarías Rusty,Sin&nbsp;entrega,"3,00","10,00",Sí,-,-,<p>No se encontr&oacute; el archivo HTML.</p>
+Participante_19137,Zacarías Rusty,Sin&nbsp;entrega,,"10,00",Sí,-,-,"<p>compila correctamente<br></p>
+<p>Calificaci&oacute;n final: 7/10<br></p>
+<table border=""1"">
+<tbody>
+<tr>
+<th>M&eacute;todo</th>
+<th>Puntuaci&oacute;n</th>
+<th>Retroalimentaci&oacute;n</th>
+</tr>
+<tr>
+<td>poly_crear</td>
+<td>0.5 / 1</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n reserva memoria y asigna los punteros <code>primero</code> y <code>ultimo</code> a NULL, pero no cumple la especificaci&oacute;n al finalizar con <code>exit(1)</code> en lugar de <code>exit(-1)</code> en caso de error. <br> <strong>Mantenimiento:</strong> El c&oacute;digo es breve y f&aacute;cil de seguir, aunque se podr&iacute;a mejorar la nomenclatura del par&aacute;metro (por ejemplo, usar <code>polinomio</code> en lugar de <code>p</code>).<br> <strong>Claridad:</strong> Resulta comprensible, pero el mensaje de error podr&iacute;a ser m&aacute;s claro y acorde a la especificaci&oacute;n.<br> <strong>Eficiencia:</strong> Adecuada para la tarea requerida.<br> <em>Sugerencia Formativa:</em> Aseg&uacute;rate de utilizar el c&oacute;digo de salida correcto (-1) cuando se falle la reserva de memoria.</td>
+</tr>
+<tr>
+<td>poly_grado</td>
+<td>1 / 1</td>
+<td><strong>Funcionalidad:</strong> Calcula el grado del polinomio en O(1) aprovechando el puntero <code>ultimo</code> siempre que el polinomio contenga elementos, y devuelve -1 en caso de fallo. <br> <strong>Mantenimiento:</strong> El c&oacute;digo es conciso y f&aacute;cilmente modificable.<br> <strong>Claridad:</strong> El nombre de las variables es descriptivo y el flujo l&oacute;gico es claro.<br> <strong>Eficiencia:</strong> Excelente, ya que evita recorrer toda la lista.</td>
+</tr>
+<tr>
+<td>poly_coeficiente</td>
+<td>1 / 1</td>
+<td><strong>Funcionalidad:</strong> Recorre la lista de monomios y devuelve el coeficiente correspondiente al exponente solicitado o 0 si no existe, gestionando correctamente el caso de exponentes negativos. <br> <strong>Mantenimiento:</strong> Aunque el c&oacute;digo funciona correctamente, podr&iacute;a beneficiarse de una funci&oacute;n auxiliar para la b&uacute;squeda, reduciendo la duplicaci&oacute;n en otros m&eacute;todos. <br> <strong>Claridad:</strong> Las variables y condiciones son adecuadas y f&aacute;ciles de entender. <br> <strong>Eficiencia:</strong> Utiliza el ordenamiento de la lista para limitar la b&uacute;squeda, lo cual es apropiado.</td>
+</tr>
+<tr>
+<td>poly_agregar</td>
+<td>1.0 / 2.5</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta insertar un monomio y, si existe, sumar sus coeficientes; sin embargo, presenta un fallo cr&iacute;tico al no inicializar correctamente la variable <code>previo</code> cuando el monomio coincidente se encuentra en la primera posici&oacute;n. Esto puede producir comportamientos indefinidos. <br> <strong>Mantenimiento:</strong> La l&oacute;gica emplea punteros a punteros y carece de descomposici&oacute;n en funciones auxiliares para la inserci&oacute;n en distintos casos (inicio, medio o final), lo que dificulta su mantenimiento. <br> <strong>Claridad:</strong> La lectura del c&oacute;digo es compleja debido a la gesti&oacute;n de punteros; se recomienda documentar y renombrar variables (por ejemplo, usar <code>anterior</code> en lugar de <code>previo</code>). <br> <strong>Eficiencia:</strong> El recorrido es correcto, pero la gesti&oacute;n de casos borde reduce la robustez de la funci&oacute;n. <br> <em>Sugerencia Formativa:</em> Inicializa adecuadamente la variable que guarda el nodo anterior y considera dividir la funci&oacute;n en subrutinas para cada caso de inserci&oacute;n.</td>
+</tr>
+<tr>
+<td>poly_imprimir</td>
+<td>1.25 / 1.25</td>
+<td><strong>Funcionalidad:</strong> Imprime correctamente los monomios del polinomio siguiendo el formato especificado y muestra un mensaje alternativo cuando el polinomio es nulo.<br> <strong>Mantenimiento:</strong> La utilizaci&oacute;n de la funci&oacute;n auxiliar <code>imprimirMonomio</code> facilita su mantenimiento. <br> <strong>Claridad:</strong> El c&oacute;digo es claro y directo, con nombres de variables adecuados. <br> <strong>Eficiencia:</strong> Recorre la lista de forma &oacute;ptima.</td>
+</tr>
+<tr>
+<td>poly_destruir</td>
+<td>1.25 / 1.25</td>
+<td><strong>Funcionalidad:</strong> Libera correctamente la memoria de cada monomio y reinicializa los punteros <code>primero</code> y <code>ultimo</code> a NULL, evitando fugas de memoria. <br> <strong>Mantenimiento:</strong> El c&oacute;digo es sencillo y modular. <br> <strong>Claridad:</strong> La nomenclatura es descriptiva y facilita la comprensi&oacute;n del proceso de liberaci&oacute;n de memoria. <br> <strong>Eficiencia:</strong> La iteraci&oacute;n sobre la lista se realiza de manera adecuada.</td>
+</tr>
+<tr>
+<td>poly_sumar</td>
+<td>1.0 / 2</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n suma los dos polinomios mediante la inserci&oacute;n de todos los monomios de cada uno en un nuevo polinomio. No obstante, depende de <code>poly_agregar</code>, lo que genera problemas en los casos en que existan monomios con el mismo exponente, especialmente en la cabeza de la lista. Adem&aacute;s, no se hace una validaci&oacute;n exhaustiva de las entradas nulas. <br> <strong>Mantenimiento:</strong> Podr&iacute;a optimizarse realizando un recorrido simult&aacute;neo de ambas listas, reduciendo la duplicidad en la suma de t&eacute;rminos comunes. <br> <strong>Claridad:</strong> Aunque se entiende la intenci&oacute;n, se recomienda un uso m&aacute;s descriptivo de las variables en los bucles. <br> <strong>Eficiencia:</strong> El m&eacute;todo recorre cada lista por separado; una fusi&oacute;n simult&aacute;nea podr&iacute;a mejorar la eficiencia en el manejo de polinomios grandes. <br> <em>Sugerencia Formativa:</em> Corrige la dependencia del m&eacute;todo defectuoso y considera un algoritmo que combine ambas listas de forma paralela para evitar recorridos redundantes.</td>
+</tr>
+</tbody>
+</table>"
 Participante_19139,Estéban Amber,Sin&nbsp;entrega,,"10,00",Sí,-,-,
 Participante_19138,Kappa Miguel,Sin&nbsp;entrega,,"10,00",Sí,-,-,

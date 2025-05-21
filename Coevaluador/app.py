@@ -58,7 +58,7 @@ def load_data():
     html_path = os.path.join(path, "Resultado.html")
     try:
         with open(html_path, "r", encoding="utf-8") as f:
-            html_code = f.read().replace("<br>", "\\n")
+            html_code = f.read()
     except:
         html_code = "<p>No se encontró el archivo HTML.</p>"
     
@@ -201,7 +201,7 @@ def guardar_csv_completo(nota, carpeta, html_code):
             return
         
         df.loc[df["norm_nombre"] == norm_student, "Calificación"] = nota_format
-        df.loc[df["norm_nombre"] == norm_student, "Comentarios de retroalimentación del profesor"] = html_code.replace("\\n", "<br>")
+        df.loc[df["norm_nombre"] == norm_student, "Comentarios de retroalimentación del profesor"] = html_code
         
         df.drop(columns=["norm_nombre"], errors='ignore', inplace=True)
         df.to_csv(csv_path, index=False, encoding='utf-8-sig')
