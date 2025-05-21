@@ -125,13 +125,15 @@ Por defecto, la aplicación se ejecuta en [http://127.0.0.1:5000](http://127.0.0
 
 # Licencia y contacto
 
-Este trabajo ha sido desarrollado por:
+Este trabajo ha sido desarrollado en la Universidad de Málaga dpor:
 
-- Joaquín Ballesteros — [jballesteros@uma.es](mailto:jballesteros@uma.es)
-- Pablo Franco — [pablo.franco@uma.es](mailto:pablo.franco@uma.es)
-- Lidia Fuentes — [lfuentes@uma.es](mailto:lfuentes@uma.es)
+- Joaquín Ballesteros ([jballesteros@uma.es](mailto:jballesteros@uma.es))  [ITIS Software — Grupo CAOSD](https://itis.uma.es) .
 
-Universidad de Málaga, ITIS Software — Grupo CAOSD.
+En colaboración con: 
+- Pablo Franco ([pablo.franco@uma.es](mailto:pablo.franco@uma.es)) [Métodos de Investigación y Diagnóstico en Educación](https://www.uma.es/departamento-de-teoria-e-historia-de-la-educacion/)
+- Lidia Fuentes ([lfuentes@uma.es](mailto:lfuentes@uma.es)) [ITIS Software — Grupo CAOSD](https://itis.uma.es) .
+
+
 
 Si usas este código o metodología en tu investigación o docencia, te invitamos a citar el artículo asociado.
 
