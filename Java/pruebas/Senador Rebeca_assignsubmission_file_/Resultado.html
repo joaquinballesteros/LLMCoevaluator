@@ -1,0 +1,138 @@
+Compila correctamente. <br>
+<html>
+  <body>
+    3/10<br>
+    <table border="1">
+      <tr>
+        <th>Método</th>
+        <th>Puntuación</th>
+        <th>Retroalimentación</th>
+      </tr>
+      <tr>
+        <td>insert(K key)</td>
+        <td>0/1</td>
+        <td>
+          <b>Funcionalidad:</b> El método tiene fallos críticos. En primer lugar, si el árbol está vacío (root==null) en lugar de insertar la nueva clave, lanza una excepción, incumpliendo el requisito de poder insertar en un árbol vacío. Además, la comparación de claves se realiza usando el operador "!=" en lugar de utilizar el método de comparación adecuado o equals, lo que puede llevar a detección incorrecta de duplicados. 
+          <br><b>Eficiencia:</b> Se realiza una invocación al método splay innecesaria en la copia de nodo auxiliar, generando una sobrecarga innecesaria.
+          <br><b>Calidad del código auxiliar:</b> El uso de variables como "aux" y "pass" genera confusión y no se descompone la lógica en métodos auxiliares que faciliten el mantenimiento.
+          <br><b>Claros:</b> La lógica es confusa, especialmente por el bucle while que utiliza "pass" sin una inicialización adecuada.
+          <br><b>Buenas prácticas locales:</b> Se utiliza un código que no sigue los patrones de control habituales, dificultando su comprensión.
+          <br><b>Cobertura de casos límite y gestión de excepciones:</b> Aunque se verifica que la clave no sea null, falta cubrir el caso del árbol vacío y otros posibles escenarios.
+          <br><b>Sugerencia Formativa:</b> Revisa la forma de comparar claves en Java, asegúrate de permitir insertar en árboles vacíos y refactoriza el código para separar la lógica de inserción en métodos auxiliares.
+        </td>
+      </tr>
+      <tr>
+        <td>search(K key)</td>
+        <td>0/1.5</td>
+        <td>
+          <b>Funcionalidad:</b> El método intenta splayar el árbol sobre una copia del nodo raíz; sin embargo, la creación de un nuevo nodo con "this.root" en lugar de pasar directamente la raíz, y el uso de copyOf (que lanza UnsupportedOperationException) impide que la búsqueda funcione correctamente. Además, se compara la clave buscando igualdad por referencia.
+          <br><b>Eficiencia:</b> Se utiliza una copia innecesaria del árbol, lo cual reduce la eficiencia.
+          <br><b>Calidad del código auxiliar:</b> El uso de copyOf dentro de search es inapropiado y además, dicho método no está implementado.
+          <br><b>Claros:</b> Los nombres son aceptables pero la lógica es confusa.
+          <br><b>Buenas prácticas locales:</b> La utilización inadecuada de métodos no implementados genera falta de robustez.
+          <br><b>Cobertura de casos límite y gestión de excepciones:</b> Si el árbol está vacío se podría producir un NullPointerException en lugar de una excepción controlada.
+          <br><b>Sugerencia Formativa:</b> No realices copias innecesarias y utiliza correctamente la splay para ubicar la clave; además, asegúrate de probar todos los casos borde.
+        </td>
+      </tr>
+      <tr>
+        <td>delete(K key)</td>
+        <td>0/1</td>
+        <td>
+          <b>Funcionalidad:</b> El método no está implementado y lanza una UnsupportedOperationException, lo cual incumple el requisito de eliminar un nodo del árbol realizando la operación splay.
+          <br><b>Claros:</b> La firma del método es correcta, pero la ausencia de implementación es un fallo grave.
+          <br><b>Buenas prácticas locales:</b> Falta implementar la lógica de eliminación que permita borrar el nodo y reacomodar el árbol.
+          <br><b>Cobertura de casos límite y gestión de excepciones:</b> No se está gestionando ningún caso particular.
+          <br><b>Sugerencia Formativa:</b> Implementa el método utilizando la técnica splay para mover el nodo a eliminar a la raíz y luego reajustar el árbol.
+        </td>
+      </tr>
+      <tr>
+        <td>clear()</td>
+        <td>1/1</td>
+        <td>
+          <b>Funcionalidad:</b> La implementación es correcta para eliminar todos los elementos del árbol.
+          <br><b>Claros:</b> El código es sencillo y fácil de entender.
+          <br><b>Mantenimiento:</b> La solución es directa y fácil de mantener.
+          <br><b>Eficiencia:</b> Se logra en tiempo constante, sin gastos innecesarios.
+          <br><b>Sugerencia Formativa:</b> ¡Buen trabajo en este método!
+        </td>
+      </tr>
+      <tr>
+        <td>deleteMinimum()</td>
+        <td>0/0.5</td>
+        <td>
+          <b>Funcionalidad:</b> El método intenta splayar el nodo mínimo, pero la implementación es defectuosa: se crea un nodo auxiliar a partir de la raíz y luego se asigna null a la raíz, sin realmente eliminar el mínimo de manera adecuada. Además, no se recorre para encontrar el mínimo.
+          <br><b>Claros:</b> La lógica es confusa, y los nombres utilizados no indican la acción real que se quiere realizar.
+          <br><b>Mantenimiento:</b> La solución no es reutilizable, dado que ya existe un método minimum que debería ser empleado.
+          <br><b>Eficiencia:</b> La operación es potencialmente ineficiente al no aprovechar la estructura existente.
+          <br><b>Sugerencia Formativa:</b> Utiliza el método minimum para identificar el menor y luego reutiliza la lógica de delete para removerlo, garantizando el manejo adecuado de casos vacíos.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzigRight(Node&lt;K&gt; node)</td>
+        <td>1/1</td>
+        <td>
+          <b>Funcionalidad:</b> El método realiza la doble rotación a la derecha según lo requerido.
+          <br><b>Claros:</b> Aunque la funcionalidad es correcta, se recomienda utilizar nombres de variables que reflejen claramente el papel de cada nodo en la rotación.
+          <br><b>Mantenimiento:</b> El método es corto y fácil de adaptar.
+          <br><b>Eficiencia:</b> La complejidad es O(1), siendo muy eficiente.
+          <br><b>Sugerencia Formativa:</b> Agrega comentarios que expliquen el paso a paso de la rotación para que sea más comprensible.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzigLeft(Node&lt;K&gt; node)</td>
+        <td>1/1</td>
+        <td>
+          <b>Funcionalidad:</b> La doble rotación a la izquierda se implementa correctamente.
+          <br><b>Claros:</b> Aunque es funcional, el uso de nombres de variables más descriptivos ayudaría a la legibilidad.
+          <br><b>Mantenimiento:</b> Fácil de mantener y extender, gracias a su simplicidad.
+          <br><b>Eficiencia:</b> Se opera en tiempo constante O(1).
+          <br><b>Sugerencia Formativa:</b> Considera la adición de comentarios que expliquen el proceso rotacional.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzagRightLeft(Node&lt;K&gt; node)</td>
+        <td>0/1</td>
+        <td>
+          <b>Funcionalidad:</b> La implementación de la doble rotación derecha-izquierda presenta errores. Específicamente, la condición para no realizar la primera rotación (cuando no hay subárbol en la rama izquierda del hijo derecho) no está correctamente comprobada, lo que puede llevar a aplicar rotaciones en situaciones no previstas.
+          <br><b>Claros:</b> La lógica de las condiciones es complicada y poco clara.
+          <br><b>Mantenimiento:</b> Se recomienda descomponer la lógica en métodos auxiliares para mejorar la robustez y el mantenimiento.
+          <br><b>Eficiencia:</b> Aunque opera en tiempo constante, la falla en la lógica afecta su funcionalidad.
+          <br><b>Sugerencia Formativa:</b> Revisa detenidamente la secuencia de rotaciones, asegurándote de comprobar correctamente la existencia del subárbol correspondiente antes de proceder.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzagLeftRight(Node&lt;K&gt; node)</td>
+        <td>0/1</td>
+        <td>
+          <b>Funcionalidad:</b> La implementación de la doble rotación izquierda-derecha también falla en manejar adecuadamente el caso en el que no existe el subárbol en la rama derecha del hijo izquierdo, incumpliendo los requisitos.
+          <br><b>Claros:</b> La complejidad en la lógica interna dificulta la lectura y seguimiento del código.
+          <br><b>Mantenimiento:</b> La estructura actual del código complica futuras modificaciones. Es recomendable separar la lógica en métodos privados bien documentados.
+          <br><b>Eficiencia:</b> Opera en O(1), pero el fallo funcional es el principal problema.
+          <br><b>Sugerencia Formativa:</b> Refactoriza el método, asegurándote de validar la existencia del subárbol requerido antes de aplicar cualquier rotación.
+        </td>
+      </tr>
+      <tr>
+        <td>copyOf(SearchTree&lt;K&gt; that)</td>
+        <td>0/0.5</td>
+        <td>
+          <b>Funcionalidad:</b> El método lanza una excepción UnsupportedOperationException en lugar de realizar la copia de los datos, incumpliendo el requisito de copiar la estructura interna del árbol.
+          <br><b>Claros:</b> La intención es clara, pero la falta de implementación afecta gravemente su funcionalidad.
+          <br><b>Mantenimiento:</b> Se requiere una implementación que preserve la estructura del árbol original.
+          <br><b>Eficiencia:</b> Sin implementación, este aspecto no puede evaluarse.
+          <br><b>Sugerencia Formativa:</b> Implementa el método asegurándote de recrear tanto los nodos como la estructura relacional existente en el árbol original.
+        </td>
+      </tr>
+      <tr>
+        <td>copyOf(SplayTree&lt;K&gt; that)</td>
+        <td>0/0.5</td>
+        <td>
+          <b>Funcionalidad:</b> Al igual que el método anterior, se lanza una UnsupportedOperationException sin implementar la lógica de copia, lo que impide preservar la estructura exacta del árbol.
+          <br><b>Claros:</b> La intención de copia es clara, pero la falta de implementación es un fallo crítico.
+          <br><b>Mantenimiento:</b> Se necesita un mecanismo para copiar tanto los datos como la estructura de árbol.
+          <br><b>Eficiencia:</b> No se evalúa debido a la carencia de implementación.
+          <br><b>Sugerencia Formativa:</b> Implementa el método de copia asegurando que se preserve la misma estructura jerárquica del árbol original.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

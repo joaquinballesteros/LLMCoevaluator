@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Evaluador HTML con TinyMCE</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.3/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- Añadido: highlight.js para resaltado de sintaxis Java -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/java.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .container {
+        display: flex;
+        height: 100vh;
+    }
+    .column {
+        padding: 20px;
+        box-sizing: border-box;
+        height: 100%;
+        overflow-y: auto;
+    }
+    .left-column {
+        flex: 1;
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+    }
+    .right-column {
+        flex: 1;
+    }
+    h2, h3, h4 {
+        color: #333;
+        margin-top: 0;
+    }
+    button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 10px 0;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    pre {
+        background-color: #f5f5f5;
+        padding: 0;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+    }
+    /* Añadido: Estilos para el resaltado de código */
+    pre code {
+        display: block;
+        padding: 1em;
+        overflow-x: auto;
+        line-height: 1.5;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    select, input {
+        padding: 8px;
+        margin: 5px 0;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .tox-tinymce {
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+    .actions-container {
+        margin: 15px 0;
+    }
+    .file-container {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+    }
+    #html-code {
+        margin-top: 15px;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+    }
+    .section {
+        margin-bottom: 20px;
+    }
+    /* Header sections */
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .header-section select {
+        width: auto;
+    }
+    #last-save-info {
+        margin-top: 12px;
+        font-size: 14px;
+        color: #666;
+        font-style: italic;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Columna izquierda: Archivos del estudiante -->
+    <div class="column left-column">
+        <h2>Archivos del estudiante</h2>
+        <div id="archivos"></div>
+    </div>
+    
+    <!-- Columna derecha: Nota y Editor -->
+    <div class="column right-column">
+
+        <div class="header-section">
+            <h2>Evaluación - <span id="nombre-carpeta"></span></h2>
+            <div>
+                <label>Carpeta: </label>
+                <select id="carpeta" onchange="loadData()">
+                    {% for c in carpetas %}
+                    <option value="{{ c }}">{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>Nota</h3>
+            <input id="nota" type="text" placeholder="Ingresar calificación" oninput="iniciarGuardadoAutomatico()"/>
+        </div>
+        
+        <div class="section">
+            <h3>Editor de feedback</h3>
+            <textarea id="editor"></textarea>
+            <div id="last-save-info">No se ha guardado aún</div>
+        </div>
+    </div>
+</div>
+<script>
+let tinyEditor;
+let debounceTimeout = null;
+let lastSavedContent = '';
+let lastSavedNota = '';
+
+// Inicializar TinyMCE
+document.addEventListener('DOMContentLoaded', function() {
+    tinymce.init({
+        selector: '#editor',
+        plugins: 'advlist anchor autolink charmap code codesample directionality fullscreen help image insertdatetime link lists media nonbreaking pagebreak preview searchreplace table template visualblocks visualchars wordcount',
+        toolbar: 'undo redo | blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen preview | insertfile image media template link anchor codesample | ltr rtl',
+        toolbar_sticky: true,
+        height: 400,
+        setup: function(editor) {
+            tinyEditor = editor;
+            
+            // Configurar el evento para detectar cambios en el editor
+            editor.on('Change', function() {
+                iniciarGuardadoAutomatico();
+            });
+            
+            // Configurar evento para detectar cuando el editor pierde el foco
+            editor.on('Blur', function() {
+                guardarAutomaticamente();
+            });
+        }
+    });
+    
+    // Cargar datos iniciales cuando el editor esté listo
+    tinymce.on('AddEditor', function() {
+        // No es necesario cargar datos aquí ya que lo hacemos en window.onload
+    });
+});
+
+function loadData() {
+    const carpeta = document.getElementById("carpeta").value;
+    console.log("Cargando datos para la carpeta:", carpeta);
+    
+    fetch("/load", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({carpeta})
+    }).then(res => res.json()).then(data => {
+        let archivosDiv = document.getElementById("archivos");
+        archivosDiv.innerHTML = "";
+        
+        // Mostrar información de depuración en la consola
+        console.log("Datos recibidos del servidor:", data);
+        if (data.csv_path) {
+            console.log("Ruta CSV:", data.csv_path);
+        }
+        
+        // Asegurarse de que la nota se maneje correctamente
+        const nota = data.nota !== undefined && data.nota !== null ? data.nota : "";
+        console.log("Nota cargada:", nota);
+        
+        if (data.archivos && Array.isArray(data.archivos)) {
+            data.archivos.forEach((archivo) => {
+                const fileContainer = document.createElement("div");
+                fileContainer.className = "file-container";
+                
+                const fileName = document.createElement("h4");
+                const preElement = document.createElement("pre");
+                const codeElement = document.createElement("code");
+                codeElement.className = "language-java"; // Clase para resaltar Java
+                
+                // Configurar contenido
+                if (archivo && typeof archivo === 'object' && archivo.nombre) {
+                    fileName.textContent = archivo.nombre;
+                    codeElement.textContent = archivo.contenido;
+                } else {
+                    fileName.textContent = "Archivo sin nombre";
+                    codeElement.textContent = archivo;
+                }
+                
+                // Construir estructura
+                preElement.appendChild(codeElement);
+                fileContainer.appendChild(fileName);
+                fileContainer.appendChild(preElement);
+                archivosDiv.appendChild(fileContainer);
+            });
+            
+            // Aplicar resaltado de sintaxis a todos los bloques de código
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        }
+        
+        if (tinyEditor) {
+            tinyEditor.setContent(data.html || "");
+        }
+        
+        // Asignar la nota al campo y guardar su valor actual
+        document.getElementById("nota").value = nota;
+        lastSavedNota = nota;
+        
+        // Guardar el contenido inicial del editor para comparaciones futuras
+        lastSavedContent = data.html || "";
+        
+        document.getElementById("nombre-carpeta").textContent = carpeta;
+        
+        // Actualizar la información del último guardado si hay datos previos
+        if (data.ultimoGuardado) {
+            actualizarInfoGuardado(data.ultimoGuardado);
+        } else {
+            document.getElementById("last-save-info").textContent = "No hay guardados previos";
+        }
+        
+    }).catch(error => {
+        console.error("Error cargando datos:", error);
+    });
+}
+
+function iniciarGuardadoAutomatico() {
+    // Cancelar cualquier temporizador pendiente
+    if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+    }
+    
+    // Establecer un nuevo temporizador para guardar después de 2 segundos de inactividad
+    debounceTimeout = setTimeout(guardarAutomaticamente, 2000);
+}
+
+function guardarAutomaticamente() {
+    if (!tinyEditor) return;
+    
+    const contenidoActual = tinyEditor.getContent();
+    const notaActual = document.getElementById("nota").value;
+    
+    // Solo guardar si hay cambios en el contenido o en la nota
+    if (contenidoActual !== lastSavedContent || notaActual !== lastSavedNota) {
+        const carpeta = document.getElementById("carpeta").value;
+        
+        console.log("Guardando automáticamente...");
+        console.log("Carpeta:", carpeta);
+        console.log("Nota:", notaActual);
+        
+        fetch("/save", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                carpeta, 
+                html: contenidoActual, 
+                nota: notaActual
+            })
+        }).then(res => res.json()).then(data => {
+            // Mostrar información de respuesta para depuración
+            console.log("Respuesta del servidor:", data);
+            
+            // Actualizar las variables de control
+            lastSavedContent = contenidoActual;
+            lastSavedNota = notaActual;
+            
+            // Actualizar la información del último guardado
+            actualizarInfoGuardado(data.timestamp);
+            
+            console.log("Guardado automático completado:", data.message);
+            
+            // Si hay información sobre el archivo CSV en la respuesta, mostrarla
+            if (data.csv_path) {
+                console.log("Ruta del archivo CSV:", data.csv_path);
+            }
+        }).catch(error => {
+            console.error("Error en guardado automático:", error);
+        });
+    }
+}
+
+function actualizarInfoGuardado(timestamp) {
+    if (!timestamp) {
+        timestamp = new Date().toLocaleString();
+    }
+    
+    const carpeta = document.getElementById("carpeta").value;
+    document.getElementById("last-save-info").textContent = 
+        `Último guardado: ${carpeta} - ${timestamp}`;
+}
+
+// Cargar datos cuando la página esté lista
+window.onload = function() {
+    // Asegurarnos de seleccionar el primer elemento del dropdown
+    const carpetaSelect = document.getElementById("carpeta");
+    if (carpetaSelect && carpetaSelect.options.length > 0) {
+        carpetaSelect.selectedIndex = 0; // Seleccionar el primer elemento
+    }
+    
+    // Cargar los datos del estudiante seleccionado (ahora el primero)
+    if (!tinyEditor) {
+        setTimeout(loadData, 1000);
+    } else {
+        loadData();
+    }
+};
+</script>
+</body>
+</html>
