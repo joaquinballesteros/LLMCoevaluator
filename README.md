@@ -125,7 +125,7 @@ Por defecto, la aplicación se ejecuta en [http://127.0.0.1:5000](http://127.0.0
 
 # Licencia y contacto
 
-Este trabajo ha sido desarrollado en la Universidad de Málaga dpor:
+Este trabajo ha sido desarrollado en la Universidad de Málaga por:
 
 - Joaquín Ballesteros ([jballesteros@uma.es](mailto:jballesteros@uma.es))  [ITIS Software — Grupo CAOSD](https://itis.uma.es) .
 
