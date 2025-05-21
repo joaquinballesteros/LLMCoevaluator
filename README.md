@@ -64,13 +64,15 @@ Dentro de esta carpeta se encuentra un directorio `EspacioTrabajo` con un proyec
 
 El evaluador espera encontrar en la carpeta `pruebas` una carpeta por cada estudiante con una jerarquía de carpetas y archivos `*.java` que copiaran uno a uno al espacio de trabajo para compilar y ver que funciona correctamente. Un ejemplo de sistema de carpetas que se espera dentro de pruebas:
 ```plaintext
+EspacioTrabajo/
 pruebas/
 ├── estudiante1/
 │   └── SplayTree.java
 ├── estudiante2/
 │   └── SplayTree.java
-└── estudiante3/
-    └── SplayTree.java
+├── estudiante3/
+│   └── SplayTree.java
+└── Calificaciones.csv
 ```
 
 Aunque se comprueba si el código compila, **la salida del compilador no se incluye en el prompt del LLM**, ya que no se ha observado un impacto positivo al hacerlo.
