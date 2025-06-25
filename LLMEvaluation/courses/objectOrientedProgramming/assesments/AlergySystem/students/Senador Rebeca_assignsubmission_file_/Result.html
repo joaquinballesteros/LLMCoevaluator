@@ -1,0 +1,68 @@
+Compila con ERRORES.<br>
+<html>
+  <body>
+    Calificación final: 44/70 <br>
+    <table border="1">
+      <tr>
+        <th>Método</th>
+        <th>Puntuación</th>
+        <th>Feedback</th>
+      </tr>
+      <tr>
+        <td>AlergiasException</td>
+        <td>0/10</td>
+        <td>
+          <strong>Funcionalidad</strong>: Se requería que la excepción herede de RuntimeException para ser no comprobada, pero en este caso extiende de Exception.<br>
+          <strong>Mantenimiento/Claridad</strong>: La implementación es sencilla, pero incumple el requisito esencial.
+        </td>
+      </tr>
+      <tr>
+        <td>TipoAlimento</td>
+        <td>10/10</td>
+        <td>
+          <strong>Claridad</strong>: El enumerado está bien definido; cada constante es descriptiva y la estructura resulta clara para futuras modificaciones.
+        </td>
+      </tr>
+      <tr>
+        <td>Estacion</td>
+        <td>10/10</td>
+        <td>
+          <strong>Claridad</strong>: Cada constante está en una línea, facilitando la lectura; se ajusta perfectamente a lo solicitado.
+        </td>
+      </tr>
+      <tr>
+        <td>Alergia</td>
+        <td>6/10</td>
+        <td>
+          <strong>Funcionalidad</strong>: La clase no se declara como abstracta, lo que era un requisito. Además, el rango de severidad se inicializa de 1 a 10 en lugar de 0 a 10. En el setter de severidad, se asigna el valor antes de validar su rango, pudiendo introducir estados inválidos.<br>
+          <strong>Mantenimiento</strong>: Se podrían evitar duplicaciones de código y separar la lógica de validación en métodos privados.<br>
+          <strong>Claridad</strong>: La indentación y el uso de nombres resultan aceptables, pero la falta de comentarios en la validación dificulta su comprensión.
+        </td>
+      </tr>
+      <tr>
+        <td>AlergiaAlimenticia</td>
+        <td>8/10</td>
+        <td>
+          <strong>Funcionalidad</strong>: Se realiza correctamente la llamada al constructor padre y se incorpora el atributo específico. <br>
+          <strong>Claridad</strong>: Sería recomendable utilizar los getters para acceder a la severidad y descripción en el método toString() en lugar de acceder directamente a los atributos protegidos, lo cual mejoraría la encapsulación.
+        </td>
+      </tr>
+      <tr>
+        <td>AlergiaAmbiental</td>
+        <td>10/10</td>
+        <td>
+          <strong>Correcto</strong>: La clase cumple con los requisitos, se utiliza una lista para las estaciones y se redefine el toString() de forma adecuada.
+        </td>
+      </tr>
+      <tr>
+        <td>Paciente</td>
+        <td>0/10</td>
+        <td>
+          <strong>Funcionalidad</strong>: El método addAlergia reinicializa la lista de alergias en lugar de añadir a la existente, lo que provoca la pérdida de datos previamente almacenados.<br>
+          <strong>Cobertura de casos límite</strong>: Se controla el caso de null, pero al reinicializar la lista se elimina cualquier alergia ya añadida.<br>
+          <strong>Claridad</strong>: Se podría utilizar un bucle for-each en el método removeAlergia para simplificar el código, y en alergiasSeveridad se podría refactorizar la lógica en un método auxiliar para mejorar la legibilidad.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

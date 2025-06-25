@@ -1,0 +1,73 @@
+Compila correctamente. <br>
+<html>
+  <body>
+    <!-- Calificación global -->
+    Calificación final: 53/70 <br>
+    <table border="1">
+      <tr>
+        <th>Método/Clase</th>
+        <th>Puntuación</th>
+        <th>Feedback</th>
+      </tr>
+      <tr>
+        <td>AlergiasException</td>
+        <td>10/10</td>
+        <td>
+          <strong>Funcionalidad:</strong> La excepción se creó correctamente extendiendo RuntimeException y se proporcionaron ambos constructores solicitados.<br>
+          <strong>Mantenimiento y Claridad:</strong> Código sencillo y claro.
+        </td>
+      </tr>
+      <tr>
+        <td>TipoAlimento</td>
+        <td>10/10</td>
+        <td>
+          <strong>Claridad:</strong> El enumerado está bien definido, cada constante separada y legible.<br>
+          <strong>Mantenimiento:</strong> Fácil de extender si se precisan más tipos.
+        </td>
+      </tr>
+      <tr>
+        <td>Estacion</td>
+        <td>10/10</td>
+        <td>
+          <strong>Claridad:</strong> Los valores del enumerado están definidos de forma ordenada y resultan fáciles de leer.<br>
+          <strong>Mantenimiento:</strong> La estructura del enumerado es sencilla y extensible.
+        </td>
+      </tr>
+      <tr>
+        <td>Alergia (clase abstracta)</td>
+        <td>6/10</td>
+        <td>
+          <strong>Funcionalidad:</strong> Se implementan los dos constructores y los getters y setters; sin embargo, 
+          la validación de la severidad utiliza unos límites (minSeveridad = 1 y maxSeveridad = 10) que no corresponden al enunciado (se requería min = 0). Además, la condición de validación (≤ min y ≥ max) impide usar los valores límite de forma correcta.<br>
+          <strong>Mantenimiento y Claridad:</strong> El código es breve, pero se podría mejorar la legibilidad separando la validación en un método privado y usando una indentación homogénea.
+        </td>
+      </tr>
+      <tr>
+        <td>AlergiaAlimenticia</td>
+        <td>8/10</td>
+        <td>
+          <strong>Funcionalidad:</strong> La especialización se implementa correctamente llamando al constructor del padre y definiendo el atributo adicional. El método toString() devuelve la representación solicitada, aunque se podrían usar nombres de parámetro más descriptivos.<br>
+          <strong>Claridad:</strong> La estructura es directa; sin embargo, se recomienda evitar acceder directamente a los campos protegidos y, en su lugar, utilizar métodos getter si fuese necesario.
+        </td>
+      </tr>
+      <tr>
+        <td>AlergiaAmbiental</td>
+        <td>9/10</td>
+        <td>
+          <strong>Funcionalidad:</strong> La clase extiende Alergia y añade la lista de estaciones correctamente. El método getEstaciones() facilita el acceso.<br>
+          <strong>Claridad y Mantenimiento:</strong> El método toString() intenta seguir el formato indicado, pero adolece de un pequeño error de formato por no cerrar el corchete al final de la cadena. Esto, aunque menor, afecta a la representación textual exacta.
+        </td>
+      </tr>
+      <tr>
+        <td>Paciente</td>
+        <td>0/10</td>
+        <td>
+          <strong>Funcionalidad:</strong> La mayoría de los métodos (constructor, getEdad, setEdad, getNombre, getAlergias, removeAlergia y alergiasSeveridad) funcionan correctamente. Sin embargo, el método addAlergia presenta un fallo crítico:<br>
+          - En lugar de verificar si el parámetro es null antes de añadir la alergia, se intenta añadir el objeto a la lista y, posteriormente, se intenta añadir un valor null para lanzar la excepción, lo que podría agregar un elemento inesperado y no cumple con el comportamiento esperado.<br>
+          <strong>Claridad y Eficiencia:</strong> El uso de String concatenado en toString() y la falta de formateo (salto de línea y uso de StringBuilder) dificultan la lectura y hacen que el formato no se ajuste al especificado.<br>
+          <strong>Mantenimiento:</strong> Se recomienda validar el parámetro al inicio del método addAlergia para evitar duplicación de operaciones y comportamientos no deseados.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

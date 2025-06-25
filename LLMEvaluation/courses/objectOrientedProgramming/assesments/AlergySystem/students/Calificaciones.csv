@@ -1,0 +1,101 @@
+﻿Identificador,Nombre completo,Estado,Calificación,Calificación máxima,La calificación puede ser cambiada,Visualización/<br>entrega,Última modificación (calificación),Comentarios de retroalimentación del profesor
+Participante_19140,Senador Rebeca,Sin&nbsp;entrega,"4,88","10,00",Sí,-,-,"<p>&nbsp;</p>
+<table border=""1"">
+<tbody>
+<tr>
+<th>M&eacute;todo</th>
+<th>Puntuaci&oacute;n</th>
+<th>Retroalimentaci&oacute;n</th>
+</tr>
+<!-- poly_crear -->
+<tr>
+<td>poly_crear</td>
+<td>0.1 / 1</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n asigna memoria e inicializa los campos de la estructura, pero se olvida de asignar el puntero creado a <code>*p</code>, por lo que el polinomio creado no es accesible desde el exterior.<br><em>Sugerencia Formativa:</em> Utiliza siempre de el depurador para revisar que las asignaciones son correctas.</td>
+</tr>
+<!-- poly_grado -->
+<tr>
+<td>poly_grado</td>
+<td>0.5 / 1</td>
+<td><strong>Funcionalidad:</strong> Se asume que el campo <code>ultimo</code> contiene el monomio de mayor exponente, pero no se contempla la posibilidad de que el puntero <code>p</code> sea NULL.<br><strong>Claridad:</strong> El uso de la variable local <code>mon</code> es aceptable; sin embargo, nombrar el par&aacute;metro o la variable de manera que indique que se espera tener la cola del polinomio podr&iacute;a mejorar la comprensi&oacute;n. Usa la negaci&oacute;n&nbsp;<br><em>Sugerencia Formativa:</em> Considera validar que <code>p</code> no sea NULL y documenta la suposici&oacute;n de que el &uacute;ltimo nodo contiene el monomio de mayor exponente.</td>
+</tr>
+<!-- poly_coeficiente -->
+<tr>
+<td>poly_coeficiente</td>
+<td>0.5 / 1</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n recorre la lista, pero en lugar de devolver el coeficiente del monomio que coincide con el exponente, asigna y devuelve el valor del <code>exponente</code> del nodo encontrado. Esto no cumple la especificaci&oacute;n (debe retornar el coeficiente).<br><strong>Mantenimiento:</strong> Se recomienda factorizar la b&uacute;squeda de un monomio en una funci&oacute;n auxiliar para evitar duplicar l&oacute;gica en otros m&eacute;todos.<br><strong>Claridad:</strong> Los nombres de variables son aceptables, aunque el error en la asignaci&oacute;n (usar <code>mon-&gt;exponente</code> en lugar de <code>mon-&gt;coeficiente</code>) reduce la claridad de la intenci&oacute;n.<br><strong>Eficiencia:</strong> El recorrido lineal es correcto para la estructura enlazada, sin embargo, el manejo de casos extremos podr&iacute;a ser mejorado.<br><em>Sugerencia Formativa:</em> Revisa detenidamente la asignaci&oacute;n dentro del ciclo y aseg&uacute;rate de devolver el coeficiente correcto. Considera validar que el exponente no sea negativo.</td>
+</tr>
+<!-- poly_agregar -->
+<tr>
+<td>poly_agregar</td>
+<td>1.0 / 2.5</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta insertar o actualizar un monomio, pero la l&oacute;gica presenta varios errores: se realizan asignaciones incorrectas (por ejemplo, <code>mon = mon-&gt;coeficiente + coef;</code> en lugar de actualizar <code>mon-&gt;coeficiente</code>), se usan condiciones y bucles confusos, y la eliminaci&oacute;n de nodos con coeficiente cero no se gestiona correctamente.<br><strong>Mantenimiento:</strong> La funci&oacute;n es excesivamente larga y confusa. Dividirla en subrutinas (por ejemplo, para la b&uacute;squeda, inserci&oacute;n en cabeza, en medio o al final) facilitar&iacute;a su mantenimiento y futura ampliaci&oacute;n.<br><strong>Claridad:</strong> La mezcla de operaciones de suma, eliminaci&oacute;n e inserci&oacute;n en un solo bloque dificulta la comprensi&oacute;n. Nombres de variables y comentarios descriptivos mejorados ayudar&iacute;an a clarificar la intenci&oacute;n de cada secci&oacute;n.<br><strong>Eficiencia:</strong> Se realizan recorridos m&uacute;ltiples en la lista; se puede optimizar la inserci&oacute;n aprovechando la estructura ya ordenada del polinomio.<br><em>Sugerencia Formativa:</em> Reestructura la funci&oacute;n para separar las distintas responsabilidades, corrige las asignaciones err&oacute;neas y verifica cuidadosamente las condiciones para evitar errores l&oacute;gicos.</td>
+</tr>
+<!-- poly_imprimir -->
+<tr>
+<td>poly_imprimir</td>
+<td>0.625 / 1.25</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta imprimir el polinomio, pero tiene errores en los nombres de los campos y funciones (por ejemplo, se usa <code>prinf</code> en lugar de <code>printf</code> y se hace referencia a <code>sig</code>, <code>coef</code> y <code>exp</code> en lugar de <code>siguiente</code>, <code>coeficiente</code> y <code>exponente</code>). Adem&aacute;s, el bucle impide imprimir el &uacute;ltimo monomio.<br><strong>Mantenimiento:</strong> Una correcci&oacute;n en los nombres y la inclusi&oacute;n de un comentario explicativo sobre el formato esperado har&iacute;an el c&oacute;digo m&aacute;s manejable.<br><strong>Claridad:</strong> La intenci&oacute;n es clara, pero los errores tipogr&aacute;ficos y de nomenclatura afectan la legibilidad y correcta ejecuci&oacute;n.<br><strong>Eficiencia:</strong> El recorrido lineal es adecuado, si se corrigieran los errores se lograr&iacute;a la funcionalidad deseada.<br><em>Sugerencia Formativa:</em> Corrige los errores tipogr&aacute;ficos (<code>prinf</code> por <code>printf</code>) y aseg&uacute;rate de utilizar los nombres de campos correctos conforme a la estructura definida. Adem&aacute;s, revisa el bucle para garantizar que se imprime todos los nodos.</td>
+</tr>
+<!-- poly_destruir -->
+<tr>
+<td>poly_destruir</td>
+<td>0.75 / 1.25</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta liberar todos los nodos, pero comienza asumiendo que existen al menos dos nodos (<code>p-&gt;primero-&gt;sig</code>) sin comprobarlo, y la estrategia de liberaci&oacute;n puede dejar nodos sin liberar o provocar accesos indebidos.<br><strong>Mantenimiento:</strong> El c&oacute;digo carece de comentarios que expliquen la l&oacute;gica usada para recorrer y liberar la lista, lo que dificulta futuras modificaciones.<br><strong>Claridad:</strong> El uso de variables como <code>mon</code> y <code>aux</code> no es suficientemente descriptivo, y la l&oacute;gica de liberaci&oacute;n (especialmente en el bucle) es confusa.<br><strong>Eficiencia:</strong> El m&eacute;todo recorre la lista linealmente, pero la implementaci&oacute;n puede provocar errores de memoria, afectando la confiabilidad del c&oacute;digo.<br><em>Sugerencia Formativa:</em> Revisa el algoritmo de liberaci&oacute;n asegur&aacute;ndote de recorrer toda la lista de forma segura, comprobando siempre la existencia de nodos antes de acceder a sus miembros, y asigna <code>NULL</code> a los punteros principales una vez finalizada la liberaci&oacute;n.</td>
+</tr>
+<!-- poly_sumar -->
+<tr>
+<td>poly_sumar</td>
+<td>1.0 / 2</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n est&aacute; pr&aacute;cticamente incompleta. S&oacute;lo se realiza una comparaci&oacute;n err&oacute;nea entre los coeficientes del primer monomio de cada polinomio y, en caso de no coincidir, se retorna NULL; no se implementa la suma de los monomios ni se recorren correctamente las listas.<br><strong>Mantenimiento:</strong> La falta de implementaci&oacute;n completa y la ausencia de comentarios sobre la estrategia hacen dif&iacute;cil extender esta funci&oacute;n en el futuro.<br><strong>Claridad:</strong> El c&oacute;digo es confuso, ya que se empieza a implementar la asignaci&oacute;n de memoria para el polinomio resultante sin definir la l&oacute;gica de suma entre los monomios.<br><strong>Eficiencia:</strong> No se puede evaluar la eficiencia al no estar implementada la l&oacute;gica principal de combinaci&oacute;n de t&eacute;rminos.<br><em>Sugerencia Formativa:</em> Implementa la suma recorriendo ambos polinomios simult&aacute;neamente, sumando los coeficientes correspondientes y creando los nodos resultantes de forma ordenada. Aseg&uacute;rate de validar los casos en que uno de los polinomios sea NULL.</td>
+</tr>
+</tbody>
+</table>"
+Participante_19137,Zacarías Rusty,Sin&nbsp;entrega,7,"10,00",Sí,-,-,"<p>compila correctamente</p>
+<p>Calificaci&oacute;n final: 7/10</p>
+<table border=""1"">
+<tbody>
+<tr>
+<th>M&eacute;todo</th>
+<th>Puntuaci&oacute;n</th>
+<th>Retroalimentaci&oacute;n</th>
+</tr>
+<tr>
+<td>poly_crear</td>
+<td>0.5 / 1</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n reserva e inicializa la estructura correctamente, pero se requiere que en caso de fallo se finalice con c&oacute;digo -1; se usa exit(1) en lugar de exit(-1).<br><strong>Mantenimiento:</strong> El c&oacute;digo es corto y directo, sin duplicaci&oacute;n, pero se podr&iacute;a enriquecer con un mensaje de error m&aacute;s claro y consistente.<br><strong>Claridad:</strong> Los nombres usados son descriptivos; sin embargo, se recomienda renombrar el par&aacute;metro a algo m&aacute;s intuitivo (por ejemplo, ""polinomio"") para mayor comprensi&oacute;n.<br><strong>Eficiencia:</strong> No presenta bucles o condiciones complejas; la implementaci&oacute;n es eficiente para el prop&oacute;sito.<br><em>Sugerencia Formativa:</em> Ajustar el c&oacute;digo de salida a exit(-1) y mejorar el mensaje de error para lograr especificaciones exactas.</td>
+</tr>
+<tr>
+<td>poly_grado</td>
+<td>1 / 1</td>
+<td><strong>Funcionalidad:</strong> Calcula el grado consultando el &uacute;ltimo monomio, devolviendo -1 si el polinomio es NULL o vac&iacute;o.<br><strong>Mantenimiento:</strong> El c&oacute;digo es simple y permite futuras modificaciones sin complicaciones.<br><strong>Claridad:</strong> La variable ""res"" es clara y la l&oacute;gica es lineal. Se recomienda, si se repite la comprobaci&oacute;n de polinomio no nulo en otros m&eacute;todos, considerar una funci&oacute;n auxiliar.<br><strong>Eficiencia:</strong> La implementaci&oacute;n es de O(1) y responde eficientemente al requerimiento.<br><em>Sugerencia Formativa:</em> Aunque es correcto, modularizar verificaciones comunes podr&iacute;a facilitar el mantenimiento a futuro.</td>
+</tr>
+<tr>
+<td>poly_coeficiente</td>
+<td>1 / 1</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n recorre los monomios hasta el exponente indicado y devuelve correctamente el coeficiente o 0 si no se encuentra; se verifica que el exponente sea no negativo.<br><strong>Mantenimiento:</strong> El uso de un bucle simple y comprobaciones claras facilita la extensi&oacute;n del m&eacute;todo.<br><strong>Claridad:</strong> Los nombres de variables son descriptivos y la estructura del loop es comprensible.<br><strong>Eficiencia:</strong> Se evita recorrer de m&aacute;s gracias a la condici&oacute;n en el while, aunque se asume que la lista est&aacute; ordenada.<br><em>Sugerencia Formativa:</em> Considera documentar de forma breve el supuesto de orden en la lista para aumentar la claridad.</td>
+</tr>
+<tr>
+<td>poly_agregar</td>
+<td>1.0 / 2.5</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n intenta insertar o actualizar un monomio existente en la lista. Sin embargo, si se intenta actualizar el primer elemento (cuando no se entra al loop) se utiliza una variable ""previo"" no inicializada, lo que puede causar errores en la suma y eliminaci&oacute;n del nodo. Adem&aacute;s, se usa exit(1) en vez de exit(-1) en caso de fallo en malloc. <br><strong>Mantenimiento:</strong> Aunque se ha extra&iacute;do la suma en la funci&oacute;n auxiliar ""sumarMonomiosF"", la complejidad de manejar punteros a punteros y la falta de separaci&oacute;n de casos (inicio, medio y final) dificultan su mantenimiento.<br><strong>Claridad:</strong> El uso de variables como ""aux"" y ""previo"" puede resultar confuso, especialmente cuando ""previo"" no est&aacute; inicializado en el caso de inserci&oacute;n al inicio.<br><strong>Eficiencia:</strong> El algoritmo es adecuado en t&eacute;rminos de eficiencia, utilizando un solo recorrido para encontrar la posici&oacute;n de inserci&oacute;n.<br><em>Sugerencia Formativa:</em> Revisa el manejo del caso en que la operaci&oacute;n se realiza sobre el primer nodo; inicializa correctamente la variable ""previo"" o trata ese caso por separado. Adem&aacute;s, cumple estrictamente con el protocolo de salida para fallos en la asignaci&oacute;n de memoria.</td>
+</tr>
+<tr>
+<td>poly_imprimir</td>
+<td>1.25 / 1.25</td>
+<td><strong>Funcionalidad:</strong> Imprime los monomios en un formato legible y maneja correctamente el caso en que el polinomio es NULL.<br><strong>Mantenimiento:</strong> El m&eacute;todo es breve y no contiene duplicaci&oacute;n de c&oacute;digo; la funci&oacute;n auxiliar ""imprimirMonomio"" ayuda a mantener bien organizado el c&oacute;digo.<br><strong>Claridad:</strong> El c&oacute;digo resulta f&aacute;cil de leer y se entiende la intenci&oacute;n de cada parte.<br><strong>Eficiencia:</strong> Utiliza un bucle simple y es eficiente en su prop&oacute;sito.<br><em>Sugerencia Formativa:</em> La implementaci&oacute;n es correcta; se podr&iacute;a agregar un comentario adicional explicativo en la llamada final a printf para separar salidas.</td>
+</tr>
+<tr>
+<td>poly_destruir</td>
+<td>1.25 / 1.25</td>
+<td><strong>Funcionalidad:</strong> Libera adecuadamente todos los nodos y reinicializa los punteros del polinomio, evitando fugas de memoria.<br><strong>Mantenimiento:</strong> El uso de dos punteros para recorrer y liberar la lista permite que el c&oacute;digo sea extendido y modificado f&aacute;cilmente.<br><strong>Claridad:</strong> Las variables ""head"" y ""aux"" permiten seguir la l&oacute;gica de liberaci&oacute;n de memoria sin dificultad.<br><strong>Eficiencia:</strong> La estrategia de liberar nodos en un solo recorrido es eficiente.<br><em>Sugerencia Formativa:</em> Considera agregar comentarios sobre la importancia de reinicializar los punteros para reutilizar la estructura.</td>
+</tr>
+<tr>
+<td>poly_sumar</td>
+<td>1.0 / 2</td>
+<td><strong>Funcionalidad:</strong> La funci&oacute;n suma dos polinomios creando una nueva estructura e insertando los monomios de cada uno mediante poly_agregar. Sin embargo, al depender de poly_agregar, hereda el problema con la actualizaci&oacute;n de monomios en el primer nodo, lo que puede afectar la correcta suma cuando existen monomios con el mismo exponente.<br><strong>Mantenimiento:</strong> La estrategia de sumar dos listas por separado es comprensible, pero integrar la suma de monomios coincidentes en un solo recorrido podr&iacute;a simplificar la l&oacute;gica y el mantenimiento.<br><strong>Claridad:</strong> El uso de ciclos separados para cada polinomio es claro, pero se recomienda verificar la validez de los punteros de entrada de forma independiente para mayor robustez.<br><strong>Eficiencia:</strong> El m&eacute;todo resulta en dos recorridos completos, lo cual es aceptable, aunque se podr&iacute;a optimizar fusionando ambos recorridos cuando las listas est&eacute;n ordenadas.<br><em>Sugerencia Formativa:</em> Aseg&uacute;rate de manejar correctamente los casos extremos y considera refactorizar para evitar duplicaci&oacute;n de c&oacute;digo y aprovechar la ordenaci&oacute;n inherente de los polinomios.</td>
+</tr>
+</tbody>
+</table>"
+Participante_19139,Estéban Amber,Sin&nbsp;entrega,,"10,00",Sí,-,-,
+Participante_19138,Kappa Miguel,Sin&nbsp;entrega,,"10,00",Sí,-,-,

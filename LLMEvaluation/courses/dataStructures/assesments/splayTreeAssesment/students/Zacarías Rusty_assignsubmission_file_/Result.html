@@ -1,0 +1,124 @@
+Compiles successfully. <br>
+<html>
+  <body>
+    Final grade: 9.2/10<br>
+    <table border="1">
+      <tr>
+        <th>Method</th>
+        <th>Score</th>
+        <th>Feedback</th>
+      </tr>
+      <tr>
+        <td>insert(K key)</td>
+        <td>0.9/1</td>
+        <td>
+          <strong>Functionality:</strong> The insertion works as required (inserting a new node or replacing the key if it already exists) and throws an exception if key is null. However, the design uses recursion combined with an extra splay call at the top level, which can lead to unnecessary calls.<br>
+          <strong>Maintainability:</strong> The recursive helper could be simplified to avoid duplicate splay operations; refactoring it into a more iterative approach or minimizing recursive calls would help in future extensions.<br>
+          <strong>Clarity:</strong> The code would benefit from additional comments explaining why and when the recursive splay is re‐invoked. Variable naming is acceptable but additional inline documentation would help readers follow the logic.<br>
+          <strong>Efficiency:</strong> Multiple splay invocations may affect performance slightly, so there is a minor efficiency hit.
+        </td>
+      </tr>
+      <tr>
+        <td>search(K key)</td>
+        <td>1.5/1.5</td>
+        <td>
+          <strong>Functionality:</strong> Correctly throws an exception for null keys or empty trees, uses splay to bring the accessed node to the root, and returns the key if found.<br>
+          <strong>Maintainability:</strong> The method is concise and leverages the splay helper appropriately.<br>
+          <strong>Clarity:</strong> The control flow is clear and easy to follow.<br>
+          <strong>Efficiency:</strong> Efficient, with only one splay operation per call.
+        </td>
+      </tr>
+      <tr>
+        <td>delete(K key)</td>
+        <td>0.5/1</td>
+        <td>
+          <strong>Functionality:</strong> The deletion method splays the tree with the specified key and then deletes the root if the key is found. However, the method decrements the tree size unconditionally even when the key is not present, which is a functional bug.<br>
+          <strong>Maintainability:</strong> The splitting of deletion logic into a helper (deleteRoot) is a good idea, but the lack of proper handling for the “not found” case complicates future fixes.<br>
+          <strong>Clarity:</strong> The deletion path could be better documented, especially regarding when and why the size is modified.<br>
+          <strong>Efficiency:</strong> The approach is acceptable in efficiency but the logical error overshadows it.<br>
+          <strong>Suggestion:</strong> Adjust the logic so that the size is decremented only if a deletion actually occurs.
+        </td>
+      </tr>
+      <tr>
+        <td>clear()</td>
+        <td>1/1</td>
+        <td>
+          <strong>Functionality:</strong> Correctly clears the tree by setting the root to null and size to 0.<br>
+          <strong>Clarity:</strong> The method is straightforward and its intent is immediately clear.<br>
+          <strong>Maintainability:</strong> Simple and minimal, making it easy to maintain.<br>
+          <strong>Efficiency:</strong> Direct and efficient.
+        </td>
+      </tr>
+      <tr>
+        <td>deleteMinimum()</td>
+        <td>0.5/0.5</td>
+        <td>
+          <strong>Functionality:</strong> Correctly finds the minimum, splays the tree with that minimum key, and removes it by reassigning the root.<br>
+          <strong>Clarity:</strong> While the method is concise, adding a comment to clarify that the splay guarantees that the minimum becomes the root (with no left child) would help readers.<br>
+          <strong>Maintainability:</strong> Reusing existing functionality (e.g. the minimum() method) is a good practice.<br>
+          <strong>Efficiency:</strong> Efficient, with no unnecessary operations.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzigRight(Node&lt;K&gt; node)</td>
+        <td>1/1</td>
+        <td>
+          <strong>Functionality:</strong> Implements the double right rotation as specified: performs one rotation and only does the second if the left child is not null.<br>
+          <strong>Clarity:</strong> The rotation steps work correctly though additional inline comments illustrating the transformation steps would enhance understanding.<br>
+          <strong>Maintainability:</strong> The method is short and modular, which will simplify future changes.<br>
+          <strong>Efficiency:</strong> Operates in constant time.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzigLeft(Node&lt;K&gt; node)</td>
+        <td>1/1</td>
+        <td>
+          <strong>Functionality:</strong> Correctly implements the double left rotation following the same rules as zigzigRight.<br>
+          <strong>Clarity:</strong> While correct, more descriptive variable names and comments explaining the left rotation steps would be beneficial.<br>
+          <strong>Maintainability:</strong> Concise and modular in structure.<br>
+          <strong>Efficiency:</strong> Efficient, with O(1) complexity.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzagRightLeft(Node&lt;K&gt; node)</td>
+        <td>0.9/1</td>
+        <td>
+          <strong>Functionality:</strong> The method checks for the existence of the left subtree of the right child before performing the first rotation and then always performs the second rotation. It generally meets the requirement, though the structure could be made clearer.<br>
+          <strong>Clarity:</strong> The logic works but could be improved with extra comments explaining the conditions under which the first rotation is skipped.<br>
+          <strong>Maintainability:</strong> A slight refactoring into helper functions might ease future modifications.<br>
+          <strong>Efficiency:</strong> Works efficiently in constant time.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzagLeftRight(Node&lt;K&gt; node)</td>
+        <td>0.9/1</td>
+        <td>
+          <strong>Functionality:</strong> Correctly implements the left-right double rotation by first checking the existence of the right subtree of the left child.<br>
+          <strong>Clarity:</strong> Although the steps are correct, clearer documentation and less nesting would improve readability.<br>
+          <strong>Maintainability:</strong> Consider refactoring complex rotation logic into smaller helper methods.<br>
+          <strong>Efficiency:</strong> Operates in O(1) time.
+        </td>
+      </tr>
+      <tr>
+        <td>copyOf(SearchTree&lt;K&gt; that)</td>
+        <td>0.5/0.5</td>
+        <td>
+          <strong>Functionality:</strong> Correctly copies the data from a generic search tree by iterating over the in‐order traversal and inserting each element. Since the requirement for SearchTree copy is to copy the data (and not necessarily preserve structure), this implementation is valid.<br>
+          <strong>Clarity:</strong> The method is straightforward and uses descriptive names.<br>
+          <strong>Maintainability:</strong> Easy to follow and modify if needed.<br>
+          <strong>Efficiency:</strong> Acceptable for the intended use.
+        </td>
+      </tr>
+      <tr>
+        <td>copyOf(SplayTree&lt;K&gt; that)</td>
+        <td>0.5/0.5</td>
+        <td>
+          <strong>Functionality:</strong> Uses a recursive helper to copy nodes and their subtrees, thereby preserving the original tree structure. This meets the requirement for copying a SplayTree.<br>
+          <strong>Clarity:</strong> The recursive approach is clear and leverages proper null checking.<br>
+          <strong>Maintainability:</strong> The code is modular and easy to update if needed.<br>
+          <strong>Efficiency:</strong> The copy is performed in O(n) time which is acceptable.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

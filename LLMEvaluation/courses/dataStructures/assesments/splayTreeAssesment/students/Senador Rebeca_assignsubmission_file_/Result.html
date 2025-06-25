@@ -1,0 +1,122 @@
+Compiles successfully. <br>
+<html>
+  <body>
+    Final grade: 3/10<br>
+    <table border="1">
+      <tr>
+        <th>Método</th>
+        <th>Puntuación</th>
+        <th>Feedback</th>
+      </tr>
+      <tr>
+        <td>insert(K key)</td>
+        <td>0/1</td>
+        <td>
+          <strong>Funcionalidad:</strong> La implementación falla en insertar correctamente. Se lanza una excepción cuando el árbol está vacío en lugar de crear el nodo raíz, se utiliza un nodo auxiliar creado a partir de la raíz y la comparación se hace de forma incorrecta, lo que impide detectar duplicados y realizar la inserción correctamente.<br>
+          <strong>Claridad:</strong> El uso de variables como "aux", "pass" y el bucle que nunca se ejecuta (condición while(pass != null) con pass inicializado a null) genera confusión.<br>
+          <strong>Mantenibilidad:</strong> La lógica de inserción está fragmentada y carece de comentarios que expliquen los pasos, lo que dificulta su extensión o corrección en el futuro.<br>
+          <strong>Eficiencia:</strong> El método realiza llamadas a splay de forma inadecuada, lo que puede afectar la eficiencia global.
+        </td>
+      </tr>
+      <tr>
+        <td>search(K key)</td>
+        <td>0/1.5</td>
+        <td>
+          <strong>Funcionalidad:</strong> La búsqueda no se realiza correctamente. Se crea un nodo a partir de this.root en lugar de trabajar sobre la estructura real del árbol y se utiliza copyOf (no implementado) para trabajar con una copia. Además, la comparación se hace utilizando el operador '==' en vez de equals(), lo que puede llevar a resultados erróneos.<br>
+          <strong>Claridad:</strong> La intención del código es confusa dado el uso de variables intermedias y llamadas a métodos no implementados, lo que dificulta entender el flujo de búsqueda.<br>
+          <strong>Mantenibilidad:</strong> La estructura no favorece futuras modificaciones ni extensiones, y además la falta de comentarios complica la comprensión.<br>
+          <strong>Eficiencia:</strong> Se realizan operaciones innecesarias al crear copias del árbol para buscar.
+        </td>
+      </tr>
+      <tr>
+        <td>delete(K key)</td>
+        <td>0/1</td>
+        <td>
+          <strong>Funcionalidad:</strong> El método no ha sido implementado y lanza una excepción de UnsupportedOperationException.<br>
+          <strong>Claridad:</strong> No se aporta lógica ni comentarios que expliquen la intención.<br>
+          <strong>Mantenibilidad:</strong> La ausencia de implementación impide evaluarlo para futuros ajustes.
+        </td>
+      </tr>
+      <tr>
+        <td>clear()</td>
+        <td>1/1</td>
+        <td>
+          <strong>Funcionalidad:</strong> La implementación es correcta, asigna null a la raíz y reinicializa el tamaño.<br>
+          <strong>Claridad:</strong> El código es lineal y fácil de seguir.<br>
+          <strong>Mantenibilidad:</strong> La solución es sencilla y clara para futuras modificaciones.<br>
+          <strong>Eficiencia:</strong> Se ejecuta en tiempo óptimo.
+        </td>
+      </tr>
+      <tr>
+        <td>deleteMinimum()</td>
+        <td>0/0.5</td>
+        <td>
+          <strong>Funcionalidad:</strong> La lógica es incorrecta. En lugar de eliminar solo el nodo con el valor mínimo, se asigna null a la raíz del árbol y se invoca un splay de forma no relacionada, lo que no cumple el requisito de eliminar el mínimo.<br>
+          <strong>Claridad:</strong> La intención no está clara y se reutilizan llamadas a splay sin explicar la lógica.<br>
+          <strong>Mantenibilidad:</strong> Existe duplicación de funcionalidad ya presente en otros métodos (minimum y delete), lo que dificulta futuras correcciones.<br>
+          <strong>Eficiencia:</strong> Aunque la estructura de control es sencilla, la funcionalidad incorrecta la invalida.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzigRight(Node&lt;K&gt; node)</td>
+        <td>1/1</td>
+        <td>
+          <strong>Funcionalidad:</strong> La implementación realiza la doble rotación a la derecha correctamente, aplicando la segunda rotación si el hijo izquierdo del nodo rotado está presente.<br>
+          <strong>Claridad:</strong> Aunque la nomenclatura de variables podría ser más descriptiva y se beneficiarían de comentarios adicionales, la idea es comprensible.<br>
+          <strong>Mantenibilidad:</strong> El método es corto, se reaprovechan métodos auxiliares y es fácil de modificar.<br>
+          <strong>Eficiencia:</strong> Opera en tiempo constante (O(1)).
+        </td>
+      </tr>
+      <tr>
+        <td>zigzigLeft(Node&lt;K&gt; node)</td>
+        <td>1/1</td>
+        <td>
+          <strong>Funcionalidad:</strong> La doble rotación a la izquierda se realiza de forma correcta, comprobando la existencia del hijo derecho para realizar la segunda rotación.<br>
+          <strong>Claridad:</strong> Aunque se podría mejorar la nomenclatura o añadir comentarios, la implementación es comprensible.<br>
+          <strong>Mantenibilidad:</strong> Es conciso y facilita futuras modificaciones.<br>
+          <strong>Eficiencia:</strong> La operación se realiza en tiempo O(1).
+        </td>
+      </tr>
+      <tr>
+        <td>zigzagRightLeft(Node&lt;K&gt; node)</td>
+        <td>0/1</td>
+        <td>
+          <strong>Funcionalidad:</strong> La lógica de la doble rotación (primero derecha, luego izquierda) está mal implementada. La condición para ejecutar la primera rotación se evalúa de forma que, aun existiendo la subrama requerida, se anula el resultado y se termina realizando solo una rotación.<br>
+          <strong>Claridad:</strong> El flujo condicional es confuso y la reasignación de variables (por ejemplo, asignar node2 = node sin utilizar el valor resultante) empeora la legibilidad.<br>
+          <strong>Mantenibilidad:</strong> La complejidad en el manejo de condiciones sin extraer métodos auxiliares complica futuras revisiones.<br>
+          <strong>Eficiencia:</strong> La ausencia de una implementación correcta afecta gravemente su propósito.
+        </td>
+      </tr>
+      <tr>
+        <td>zigzagLeftRight(Node&lt;K&gt; node)</td>
+        <td>0/1</td>
+        <td>
+          <strong>Funcionalidad:</strong> La doble rotación (primero izquierda, luego derecha) no cubre correctamente los escenarios cuando no existe la subrama en la rama requerida. La lógica condicional está invertida y se pierde el valor intermedio al reasignar variables.<br>
+          <strong>Claridad:</strong> La implementación es confusa debido a la reasignación innecesaria de variables y la falta de comentarios que expliquen el proceso.<br>
+          <strong>Mantenibilidad:</strong> La complejidad innecesaria en el método dificultará su corrección en el futuro.<br>
+          <strong>Eficiencia:</strong> Aunque la estructura es simple, no cumple de forma eficiente su cometido.
+        </td>
+      </tr>
+      <tr>
+        <td>copyOf(SearchTree&lt;K&gt; that)</td>
+        <td>0/0.5</td>
+        <td>
+          <strong>Funcionalidad:</strong> El método no está implementado; por tanto, no logra copiar la estructura ni la información del árbol dado.<br>
+          <strong>Claridad:</strong> La firma y documentación son correctas, pero la ausencia de código impide evaluar la solución.<br>
+          <strong>Mantenibilidad:</strong> Se requiere la implementación para permitir reutilización y mantenimiento del código.<br>
+          <strong>Eficiencia:</strong> No se puede evaluar en ausencia de implementación.
+        </td>
+      </tr>
+      <tr>
+        <td>copyOf(SplayTree&lt;K&gt; that)</td>
+        <td>0/0.5</td>
+        <td>
+          <strong>Funcionalidad:</strong> Al igual que el método anterior, no se implementa la copia manteniendo la estructura original del árbol, incumpliendo el requerimiento.<br>
+          <strong>Claridad:</strong> La documentación es adecuada, pero la falta de código impide validar la correcta ejecución.<br>
+          <strong>Mantenibilidad:</strong> Se recomienda implementar el método para mejorar la reutilización y preservar la estructura del árbol.<br>
+          <strong>Eficiencia:</strong> No se evalúa debido a no existir la implementación.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

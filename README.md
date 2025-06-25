@@ -1,34 +1,35 @@
 # LLMCoevaluator
 
-## Introducción
+## Introduction
 
-Este repositorio acompaña al artículo **“Coevaluando con LLM: generando una retroalimentación formativa a tiempo”** enviado a las *XXXI Jornadas sobre la Enseñanza Universitaria de la Informática (JENUI 2025)*, en el que se propone una metodología de coevaluación entre docente e inteligencia artificial para asignaturas de programación. 
+This repository accompanies the article **“Coevaluando con LLM: generando una retroalimentación formativa a tiempo”** published to the *XXXI Jornadas sobre la Enseñanza Universitaria de la Informática (JENUI 2025)*. It proposes a methodology for co-evaluation between instructors and artificial intelligence in programming courses.
 
-La retroalimentación formativa es una herramienta pedagógica clave para fomentar la reflexión y el aprendizaje significativo. Sin embargo, proporcionar comentarios detallados y a tiempo en contextos con muchos estudiantes supone una carga excesiva para el profesorado. 
+Formative feedback is a key pedagogical tool to foster reflection and meaningful learning. However, providing detailed and timely feedback in large classes is a significant burden for instructors.
 
-Para abordar este problema, se plantea una solución basada en **Modelos de Lenguaje de Gran Tamaño (LLM)** que actúan como evaluadores automáticos preliminares. Estos modelos generan una evaluación inicial del código del estudiante, que luego es revisada y ajustada por el docente. De esta forma, se reduce el tiempo necesario para ofrecer retroalimentación útil sin comprometer la calidad ni la fiabilidad del proceso.  Se ha de mencionar que la evaluación automática sin supervisión es una práctica clasificada como de alto riesgo si se usa para calificar estudiantes (Ley de IA UE 2024/1689), pero deja de serlo al ser supervisada y modificada por el docente.
+To address this, we propose a solution based on **Large Language Models (LLMs)** acting as preliminary automatic evaluators. These models generate an initial assessment of the student's code, which is then reviewed and adjusted by the instructor. This reduces the time required to provide useful feedback without compromising quality or reliability. Note that fully automated grading is considered high-risk (EU AI Act 2024/1689), but this risk is mitigated when the process is supervised and modified by a human instructor.
 
-Este repositorio contiene el código necesario para realizar esta coevaluación en dos fases:
+This repository contains the code needed to perform this two-phase co-evaluation:
 
-1. Generación automática de retroalimentación usando LLM.
-2. Revisión y ajuste por parte del docente para su entrega final en la plataforma Moodle.
+1. Automatic feedback generation using LLMs.
+2. Instructor review and adjustment for final delivery in Moodle.
 
 <p align="center">
-    <img src="bigpicture.png" alt="Vista del sistema" width="20%">
+    <img src="bigpicture.png" alt="System overview" width="20%">
 </p>
 
 <p align="center">
-    <em>Figura 1: Sistema propuesto para coevaluación con LLM.</em>
+    <em>Figure 1: Proposed system for LLM-assisted co-evaluation.</em>
 </p>
 
 ---
 
-# Paso 1: Instalación y configuración
+# Step 1: Installation and Setup
 
-Se incluye un archivo `requirements.txt` para facilitar la instalación de las dependencias necesarias en un nuevo entorno python que crees. Se recomienda crearlo en esta misma carpeta.
-## Crear un entorno Python
+A `requirements.txt` file is included to simplify dependency installation in a new Python environment. It is recommended to create the environment in the root folder of the project.
 
-Para aislar las dependencias y facilitar la instalación, se recomienda crear un entorno virtual de Python. A continuación se indican los pasos para los principales sistemas operativos:
+## Create a Python Environment
+
+To isolate dependencies and simplify installation, we recommend creating a Python virtual environment. Here are the steps for major operating systems:
 
 ### Windows
 
@@ -46,98 +47,119 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Una vez activado el entorno, todas las dependencias se instalarán localmente y no afectarán a otros proyectos.
+Once the environment is activated, all dependencies will be installed locally and will not affect other projects.
 
-Además, es necesario completar las API Keys en el archivo `.env`. Este archivo ya está preparado para incluir claves de acceso a modelos de OpenAI y Anthropic. Todo el sistema está diseñado para tener esta carpeta en la raíz del proyecto.
+You must also fill in your API keys in the `.env` file. This file is prepared to include access keys for OpenAI and Anthropic models. The system expects this file in the project root.
 
 ---
 
-# Paso 2: Evaluación automática con LLM
+# Step 2: Automatic Evaluation with LLM
 
-Actualmente se soportan dos lenguajes: **C (con GCC)** y **Java (con Maven)**. Esto sólo es necesario para compilar el código y es un paso que se podría saltar si es necesario. 
+The project is organized to make it easy to extend with new LLM APIs and new types of assessments. Below is an overview of the folder structure and instructions for adding more APIs and assessments.
 
-## Evaluación en Java
+## Folder Structure
 
-En la carpeta `Java/` se incluye el fichero `Paso1_EvaluadorLocalJava.ipynb` para uso en local conectándose a las API de pago del proveedor que se configure. Se facilita el código para conectarse a OpenAI y Anthrophic.
-
-Dentro de esta carpeta se encuentra un directorio `EspacioTrabajo` con un proyecto base.
-
-El evaluador espera encontrar en la carpeta `pruebas` una carpeta por cada estudiante con una jerarquía de carpetas y archivos `*.java` que copiaran uno a uno al espacio de trabajo para compilar y ver que funciona correctamente. Un ejemplo de sistema de carpetas que se espera dentro de pruebas:
-```plaintext
-EspacioTrabajo/
-pruebas/
-├── estudiante1/
-│   └── SplayTree.java
-├── estudiante2/
-│   └── SplayTree.java
-├── estudiante3/
-│   └── SplayTree.java
-└── Calificaciones.csv
+```
+LLMCoevaluator/
+├── EvaluateStudents.py
+├── Assesments/
+│   ├── BaseAssesment.py
+│   ├── PolyC.py
+│   ├── SplayTreeJava.py
+│   └── ...
+├── LLM/
+│   ├── llm_base.py
+│   └── API/
+│       ├── anthropic.py
+│       ├── openai.py
+│       └── ...
 ```
 
-Aunque se comprueba si el código compila, **la salida del compilador no se incluye en el prompt del LLM**, ya que no se ha observado un impacto positivo al hacerlo.
+- **EvaluateStudents.py**: Main script to run the evaluation process. This process expects a folder structure for student submissions. For example, you might have a directory such as `assesmentExampleC/`, which contains one subfolder per student. Each subfolder must be named exactly as the student appears in Moodle (this matches the structure when downloading submissions directly from Moodle). Inside each student's folder, the evaluation results generated by the LLM will be saved as `Result.html` files.
+- **Assesments/**: Contains assessment logic for different exercises or languages.
+  - `BaseAssesment.py`: Abstract base class for assessments.
+  - Other files (e.g., `PolyC.py`, `SplayTreeJava.py`): Specific assessment implementations.
+- **LLM/**: Logic for interacting with Large Language Models (LLMs).
+  - `llm_base.py`: Base abstract class for LLM APIs. 
+  - **API/**: Wrappers for different LLM providers:
+    - `openai.py`: Wrapper for the OpenAI API. It allows you to select among the different available models (e.g., o3-mini, gpt-4o-mini, etc.) according to your evaluation needs. Please consult the [official OpenAI pricing page](https://platform.openai.com/docs/pricing) to check the current cost of API calls, as prices vary depending on the model and usage.
+    `anthropic.py`: Wrapper for the Anthropic API. It allows you to select among the available models (e.g., claude-3-5-haiku-20241022, etc.) according to your evaluation needs. Please consult the [official Anthropic pricing page](https://www.anthropic.com/pricing#api) to check the current cost of API calls, as prices vary depending on the model and usage.
 
-El código del estudiante, junto con una rúbrica (general y específica) y un ejemplo de salida esperado, se introduce en el prompt para que el LLM genere la retroalimentación.
+## How to Add More LLM APIs
 
-## Evaluación en C
+1. **Create a new file in `LLM/API/`**  
+   For example, to add a new provider, create `LLM/API/myllm.py`.
 
-El procedimiento es análogo al de Java.
+2. **Implement a class that inherits from `llm_base.py`**  
+   Use the structure in `openai.py` or `anthropic.py` as a reference.
 
-En la carpeta `C/` se incluye el `Paso1_EvaluadorLocalC.ipynb`.
+3. **Register or import your new API in the main evaluation logic**  
+   Update de file `EvaluateStudents.py` where LLMs are selected to include your new provider.
 
-Se incluye un ejemplo de proyecto y pruebas en las subcarpetas `EspacioTrabajo/` y `pruebas/`.
+## How to Add More Assessments
 
-Los evaluadores recorren archivos `*.c`, integran el código, compilan y formulan una petición al LLM con el prompt adecuado (rúbricas, código y resultado de la compilación).
+1. **Create a new file in `Assesments/`**  
+   For example, `MyNewAssessment.py`.
+
+2. **Implement a class that inherits from `BaseAssesment`**  
+   See `PolyC.py` or `SplayTreeJava.py` for examples.
+
+3. **Update the main script to use your new assessment**  
+   Import and instantiate your new assessment class as needed.
+
+**Summary:**  
+- Add new LLM APIs in `LLM/API/` by subclassing `llm_base.py`.
+- Add new assessments in `Assesments/` by subclassing `BaseAssesment.py`.
+
+This modular structure makes it easy to extend the system for new providers and exercises.
+
 
 ---
 
-## Coevaluación 
-El directorio `Coevaluador/` contiene el código necesario para la segunda fase del proceso: la revisión y ajuste de la retroalimentación generada automáticamente por el LLM. El objetivo es facilitar al docente la edición, validación y personalización de los comentarios antes de subirlos a Moodle.
+## Co-evaluation
 
-Antes de ejecutar la aplicación, es importante configurar algunos parámetros en el archivo `app.py` para que el sistema funcione correctamente con tus datos. En concreto, debes revisar y ajustar las siguientes variables al inicio del archivo:
+The `co_evaluator/` directory contains the code for the second phase: reviewing and adjusting the feedback generated by the LLM. The goal is to help instructors edit, validate, and personalize comments before uploading them to Moodle.
+
+Before running the application, configure the parameters in `app.py` to match your data. Specifically, check and adjust the following variables at the top of the file:
 
 ```python
-FICHERO_CORRECCIONES = "../Java/pruebas/Calificaciones.csv"  # Ruta al archivo CSV de calificaciones exportado desde Moodle
-LENGUAJE = ".java"                           # Extensión de los archivos de código a evaluar (por ejemplo, ".java" o ".c")
-CARPETA_BASE = "../Java/pruebas/"            # Carpeta donde se encuentran los directorios de cada estudiante con sus archivos de código
+GRADES_FILE = "../java/submissions/grades.csv"  # Path to the CSV file exported from Moodle
+CODE_EXTENSION = ".java"                        # Extension of code files to evaluate (e.g., ".java" or ".c")
+BASE_FOLDER = "../java/submissions/"            # Folder containing one directory per student with their code files
 ```
 
-Asegúrate de que las rutas y extensiones coincidan con la organización de tus archivos y el lenguaje de programación que estés utilizando.
+Ensure the paths and extensions match your file organization and programming language.
 
-### Ejecución
+### Running the Application
 
-Para iniciar la aplicación de coevaluación, ejecuta el archivo `app.py` que se encuentra en la carpeta `Coevaluador`:
+To start the co-evaluation app, run `app.py` in the `co_evaluator` folder:
 
 ```sh
-python Coevaluador/app.py
+python co_evaluator/app.py
 ```
 
-La aplicación de coevaluación está desarrollada con **Flask**, un microframework web para Python. Flask permite crear aplicaciones web de forma sencilla y flexible, facilitando la construcción de interfaces interactivas para la revisión y ajuste de la retroalimentación. Gracias a Flask, la herramienta ofrece una interfaz accesible desde el navegador, donde el docente puede gestionar los comentarios generados por el LLM antes de exportarlos a Moodle.
+The co-evaluation app is built with **Flask**, a lightweight Python web framework. Flask enables easy creation of interactive web interfaces for reviewing and adjusting feedback. Thanks to Flask, the tool provides a browser-accessible interface where instructors can manage LLM-generated comments before exporting them to Moodle.
 
-Por defecto, la aplicación se ejecuta en [http://127.0.0.1:5000](http://127.0.0.1:5000). Puedes acceder a la interfaz abriendo esta URL en tu navegador tras iniciar el servidor.
+By default, the app runs at [http://127.0.0.1:5000](http://127.0.0.1:5000). Open this URL in your browser after starting the server.
 
-### ¿Cómo funciona?
+### How does it work?
 
-1. **Carga de resultados automáticos:** El coevaluador importa los archivos de retroalimentación generados por el LLM para cada estudiante. Requiere el fichero CSV de las calificaciones de la tarea que se descarga automáticamente en moodle.
-2. **Interfaz de revisión:** Proporciona una interfaz (notebook o script interactivo) donde el docente puede revisar, modificar y aprobar los comentarios propuestos.
-3. **Exportación para Moodle:** Cuando se van realizando las revisiones y actualizando las notas, el fichero Calificaciones.csv también se modifica. Cuando se termina, este fichero se puede importar en la misma tarea en moodle para acualizar la nota y comentarios a los estudiantes.
-
-
----
-
-# Licencia y contacto
-
-Este trabajo ha sido desarrollado en la Universidad de Málaga por:
-
-- Joaquín Ballesteros ([jballesteros@uma.es](mailto:jballesteros@uma.es))  [ITIS Software — Grupo CAOSD](https://itis.uma.es) .
-
-En colaboración con: 
-- Pablo Franco ([pablo.franco@uma.es](mailto:pablo.franco@uma.es)) [Métodos de Investigación y Diagnóstico en Educación](https://www.uma.es/departamento-de-teoria-e-historia-de-la-educacion/)
-- Lidia Fuentes ([lfuentes@uma.es](mailto:lfuentes@uma.es)) [ITIS Software — Grupo CAOSD](https://itis.uma.es) .
-
-
-
-Si usas este código o metodología en tu investigación o docencia, te invitamos a citar el artículo asociado.
+1. **Load automatic results:** The co-evaluator imports the feedback files generated by the LLM for each student. It requires the CSV file with the grades exported from Moodle.
+2. **Review interface:** Provides an interface (notebook or interactive script) where the instructor can review, modify, and approve the proposed comments.
+3. **Export for Moodle:** As reviews and grade updates are made, the `grades.csv` file is updated. Once finished, this file can be imported back into Moodle to update student grades and comments.
 
 ---
 
+# License and Contact
+
+This work was developed at the University of Málaga by:
+
+- Joaquín Ballesteros ([jballesteros@uma.es](mailto:jballesteros@uma.es))  [ITIS Software — CAOSD Group](https://itis.uma.es).
+
+In collaboration with: 
+- Pablo Franco ([pablo.franco@uma.es](mailto:pablo.franco@uma.es)) [Research Methods and Educational Diagnosis](https://www.uma.es/departamento-de-teoria-e-historia-de-la-educacion/)
+- Lidia Fuentes ([lfuentes@uma.es](mailto:lfuentes@uma.es)) [ITIS Software — CAOSD Group](https://itis.uma.es).
+
+If you use this code or methodology in your research or teaching, please cite the associated article.
+
+---
