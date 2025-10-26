@@ -3,7 +3,7 @@ import os  # Para cargar las variables de entorno
 from dotenv import load_dotenv  # Para cargar las variables de entorno
 
 from LLMEvaluation.APIs.llm_base import LLMBase  # Importar la clase base correcta
-from openai_llm import OpenAI  # Para cargar las variables necesarias para la API de OpenAI
+from openai import OpenAI  # Para cargar las variables necesarias para la API de OpenAI
 
 
 class OpenAILLM(LLMBase):
