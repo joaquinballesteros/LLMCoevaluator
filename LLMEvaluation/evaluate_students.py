@@ -1,5 +1,5 @@
 import os
-from LLMEvaluation.utils.llm_base import LLMBase
+from LLMEvaluation.APIs.llm_base import LLMBase
 from LLMEvaluation.utils.base_assesment import BaseAssesment
 from LLMEvaluation.APIs.openai_llm import OpenAILLM
 from LLMEvaluation.APIs.antrophic_llm import AnthropicLLM

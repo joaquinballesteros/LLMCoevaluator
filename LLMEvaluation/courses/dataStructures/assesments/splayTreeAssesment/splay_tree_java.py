@@ -2,7 +2,7 @@ import os
 from LLMEvaluation.courses.dataStructures.data_structures_general import (
     DataStucturesGeneral,
 )
-from LLMEvaluation.utils.llm_base import LLMBase
+from LLMEvaluation.APIs.llm_base import LLMBase
 import shutil  # To copy the student's code into the project for compilation
 import subprocess  # To execute Java compilation and execution commands
 

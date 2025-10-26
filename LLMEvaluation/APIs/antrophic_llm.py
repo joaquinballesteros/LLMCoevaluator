@@ -1,7 +1,7 @@
 import anthropic  # Para cargar las variables necesarias para la API de Anthropic
 from dotenv import load_dotenv  # Para cargar las variables de entorno
 import os  # Para cargar las variables de entorno
-from LLMEvaluation.utils.llm_base import LLMBase  # Importar la clase base correcta
+from LLMEvaluation.APIs.llm_base import LLMBase  # Importar la clase base correcta
 
 
 class AnthropicLLM(LLMBase):

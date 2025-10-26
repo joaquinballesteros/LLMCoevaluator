@@ -5,10 +5,30 @@ import unicodedata
 import datetime
 
 app = Flask(__name__)
-# Corregido: Definimos solo el nombre del archivo, no la ruta completa
+
+# PARAMETROS DE CONFIGURACIÓN, debes cambiarlos a tu caso
+
+# Fichero CSV con las calificaciones
 FICHERO_CORRECCIONES = "Calificaciones.csv"  
-LENGUAJE = ".c"                          
-CARPETA_BASE = "./C/pruebas/"            
+
+# Lenguaje de programación de los archivos a corregir
+LENGUAJE = ".c"     
+
+# Ruta base donde están las carpetas de los estudiantes
+CARPETA_BASE = "./LLMEvaluation/courses/dataStructures/assesments/polyAssesment/students/"  
+
+# IDIOMA, ¡ REVISA TO CSV!
+
+
+COL_CALIFICACION = "Calificación"   # En español sería "Calificación", en inglés "Grade"
+COL_RETROALIMENTACION = "Comentarios de retroalimentación del profesor" # En español sería "Comentarios de retroalimentación del profesor", en inglés "Feedback comments"
+COL_NOMBRE_COMPLETO = "Nombre completo"   # En español sería "Nombre completo", en inglés "Full name"
+
+ # Lista fija de orden (sin extensión), en el “cabeza” del código
+ORDEN_PREDEFINIDO_FICHEROS = [
+    "BookingsException","Slot", "Booking", "BookingTest", "Establishment",
+    "Restaurant", "Cafeteria"
+]
 
 def normalize_string(s):
     s = s.lower()
@@ -26,16 +46,39 @@ def load_data():
     data = request.json
     carpeta = data['carpeta']
     path = os.path.join(CARPETA_BASE, carpeta)
-    archivos = []
     
-    # Recopilar todos los archivos con la extensión deseada
+
+   
+    # Normalizamos a minúsculas para comparar
+    orden_lower = [nombre.lower() for nombre in ORDEN_PREDEFINIDO_FICHEROS]
+
+    # 1) Recopilar todos los archivos con la extensión deseada
+    archivos = []
     for root, _, files in os.walk(path):
         for file in files:
             if file.endswith(LENGUAJE):
+                # ruta relativa dentro de 'carpeta'
                 relpath = os.path.relpath(os.path.join(root, file), path)
                 archivos.append(relpath)
-    
-    archivos.sort()
+
+    # 2) Orden personalizado según orden_predefinido
+    matched = []
+    restantes = set(archivos)  # para eliminar con rapidez
+
+    # Para cada nombre en la lista, buscamos coincidencias exactas de base de fichero
+    for nombre_obj in ORDEN_PREDEFINIDO_FICHEROS:
+        nl = nombre_obj.lower()
+        for f in list(restantes):
+            base = os.path.splitext(os.path.basename(f))[0].lower()
+            if base == nl:
+                matched.append(f)
+                restantes.remove(f)
+
+    # 3) Los que no estaban en la lista, alfabéticamente al final
+    resto_ordenado = sorted(restantes, key=lambda x: x.lower())
+
+    # Resultado final
+    archivos = matched + resto_ordenado
     
     # Crear la lista de objetos con nombre y contenido
     archivos_con_contenido = []
@@ -55,7 +98,7 @@ def load_data():
             })
     
     # Cargar el HTML de retroalimentación
-    html_path = os.path.join(path, "Resultado.html")
+    html_path = os.path.join(path, "Result.html")
     try:
         with open(html_path, "r", encoding="utf-8") as f:
             html_code = f.read()
@@ -76,6 +119,7 @@ def load_data():
         except:
             ultimo_guardado = None
     
+
     return jsonify({
         "archivos": archivos_con_contenido,
         "html": html_code,
@@ -93,7 +137,7 @@ def save_data():
     nota = data['nota']
     
     carpeta_path = os.path.join(CARPETA_BASE, carpeta)
-    html_path = os.path.join(carpeta_path, "Resultado.html")
+    html_path = os.path.join(carpeta_path, "Result.html")
     
     # Guardar HTML
     with open(html_path, "w", encoding="utf-8") as f:
@@ -138,20 +182,20 @@ def obtener_nota(estudiante):
     print(f"Estudiante normalizado: {norm_student}")
     
     # Verificar si 'Nombre completo' existe en las columnas
-    if 'Nombre completo' not in df.columns:
-        print(f"ERROR: 'Nombre completo' no existe en las columnas del CSV: {df.columns.tolist()}")
+    if COL_NOMBRE_COMPLETO not in df.columns:
+        print(f"ERROR: {COL_NOMBRE_COMPLETO} no existe en las columnas del CSV: {df.columns.tolist()}")
         return ""
     
-    df["norm_nombre"] = df["Nombre completo"].apply(lambda x: normalize_string(str(x)))
+    df["norm_nombre"] = df[COL_NOMBRE_COMPLETO].apply(lambda x: normalize_string(str(x)))
     matching = df[df['norm_nombre'].str.contains(norm_student, case=False, na=False)]
     
     if not matching.empty:
-        if "Calificación" in matching.columns:
-            nota = str(matching.iloc[0]["Calificación"])
+        if COL_CALIFICACION in matching.columns:
+            nota = str(matching.iloc[0][COL_CALIFICACION])
             print(f"Nota encontrada: {nota}")
             return nota
         else:
-            print(f"ERROR: 'Calificación' no existe en las columnas: {matching.columns.tolist()}")
+            print(f"ERROR: '{COL_CALIFICACION}' no existe en las columnas: {matching.columns.tolist()}")
     else:
         print(f"No se encontró al estudiante {norm_student} en el CSV")
     
@@ -176,11 +220,11 @@ def guardar_csv_completo(nota, carpeta, html_code):
     norm_student = normalize_string(carpeta)
     print(f"Estudiante normalizado para guardar: {norm_student}")
     
-    if 'Nombre completo' not in df.columns:
-        print(f"ERROR: 'Nombre completo' no existe en las columnas del CSV: {df.columns.tolist()}")
+    if COL_NOMBRE_COMPLETO not in df.columns:
+        print(f"ERROR: '{COL_NOMBRE_COMPLETO}' no existe en las columnas del CSV: {df.columns.tolist()}")
         return
     
-    df["norm_nombre"] = df["Nombre completo"].apply(lambda x: normalize_string(str(x)))
+    df["norm_nombre"] = df[COL_NOMBRE_COMPLETO].apply(lambda x: normalize_string(str(x)))
     
     if norm_student not in df["norm_nombre"].values:
         print(f"El estudiante {norm_student} no se encuentra en el CSV.")
@@ -192,16 +236,16 @@ def guardar_csv_completo(nota, carpeta, html_code):
         print(f"Guardando nota: {nota_format} para estudiante: {norm_student}")
         
         # Verificar si las columnas existen
-        if "Calificación" not in df.columns:
+        if COL_CALIFICACION not in df.columns:
             print(f"ERROR: 'Calificación' no existe en las columnas: {df.columns.tolist()}")
             return
             
-        if "Comentarios de retroalimentación del profesor" not in df.columns:
-            print(f"ERROR: 'Comentarios de retroalimentación del profesor' no existe")
+        if COL_RETROALIMENTACION not in df.columns:
+            print(f"ERROR: '{COL_RETROALIMENTACION}' no existe")
             return
         
-        df.loc[df["norm_nombre"] == norm_student, "Calificación"] = nota_format
-        df.loc[df["norm_nombre"] == norm_student, "Comentarios de retroalimentación del profesor"] = html_code
+        df.loc[df["norm_nombre"] == norm_student, COL_CALIFICACION] = nota_format
+        df.loc[df["norm_nombre"] == norm_student, COL_RETROALIMENTACION] = html_code
         
         df.drop(columns=["norm_nombre"], errors='ignore', inplace=True)
         df.to_csv(csv_path, index=False, encoding='utf-8-sig')

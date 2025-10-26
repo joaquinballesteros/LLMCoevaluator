@@ -2,7 +2,7 @@ import os  # Para cargar las variables de entorno
 
 from dotenv import load_dotenv  # Para cargar las variables de entorno
 
-from LLMEvaluation.utils.llm_base import LLMBase  # Importar la clase base correcta
+from LLMEvaluation.APIs.llm_base import LLMBase  # Importar la clase base correcta
 
 from google import genai
 
