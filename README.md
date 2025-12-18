@@ -162,4 +162,13 @@ In collaboration with:
 
 If you use this code or methodology in your research or teaching, please cite the associated article.
 
----
+```
+@article{ballesteros2025coevaluando,
+  title={Coevaluando con LLM: generando una retroalimentacion formativa a tiempo},
+  author={Ballesteros, Joaqu{\i}n and Franco, Pablo and Fuentes, Lidia},
+  journal={Actas de las Jenui},
+  volume={10},
+  pages={111--119},
+  year={2025}
+}
+```
